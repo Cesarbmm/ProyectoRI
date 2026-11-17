@@ -1,0 +1,21 @@
+{
+  "split": "validation",
+  "metric": "AP@1000",
+  "baseline": "semantic_bge_noprompt_validation_metrics.json",
+  "candidate": "semantic_bge_validation_metrics.json",
+  "statistics": {
+    "queries": 500,
+    "baseline_mean": 0.354656197912566,
+    "candidate_mean": 0.36479285164573516,
+    "delta_absolute": 0.010136653733169205,
+    "delta_relative_percent": 2.8581634249821324,
+    "ci95_low": -0.003949672256963948,
+    "ci95_high": 0.023930976998551217,
+    "p_permutation_two_sided": 0.15208479152084792,
+    "improved_queries": 219,
+    "worsened_queries": 183,
+    "unchanged_queries": 98,
+    "repetitions": 10000,
+    "seed": 20261115
+  }
+}

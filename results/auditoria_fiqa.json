@@ -1,0 +1,132 @@
+{
+  "corpus": {
+    "total": 57638,
+    "ids_duplicados": 0,
+    "textos_vacios": 38,
+    "titulos_vacios": 57638,
+    "textos_duplicados": 2,
+    "longitud_palabras": {
+      "minimo": 0,
+      "promedio": 132.9,
+      "mediana_p50": 90.0,
+      "p90": 270.0,
+      "p99": 641.63,
+      "maximo": 2973
+    },
+    "cinco_mas_largos": [
+      {
+        "id": "418057",
+        "palabras": 2973
+      },
+      {
+        "id": "462036",
+        "palabras": 2420
+      },
+      {
+        "id": "40821",
+        "palabras": 2189
+      },
+      {
+        "id": "577585",
+        "palabras": 1945
+      },
+      {
+        "id": "127434",
+        "palabras": 1882
+      }
+    ]
+  },
+  "queries": {
+    "total": 6648,
+    "ids_duplicados": 0,
+    "textos_vacios": 0,
+    "titulos_vacios": 6648,
+    "textos_duplicados": 0,
+    "longitud_palabras": {
+      "minimo": 2,
+      "promedio": 10.82,
+      "mediana_p50": 10.0,
+      "p90": 17.0,
+      "p99": 23.0,
+      "maximo": 31
+    },
+    "cinco_mas_largos": [
+      {
+        "id": "6612",
+        "palabras": 31
+      },
+      {
+        "id": "7563",
+        "palabras": 30
+      },
+      {
+        "id": "6492",
+        "palabras": 30
+      },
+      {
+        "id": "5654",
+        "palabras": 29
+      },
+      {
+        "id": "3810",
+        "palabras": 29
+      }
+    ]
+  },
+  "qrels": {
+    "train": {
+      "total_relaciones": 14166,
+      "consultas_con_qrels": 5500,
+      "consultas_con_relevantes": 5500,
+      "consultas_sin_relevantes": 0,
+      "pares_duplicados": 0,
+      "distribucion_scores": {
+        "1": 14166
+      },
+      "relevantes_por_consulta": {
+        "minimo": 1,
+        "promedio": 2.58,
+        "mediana_p50": 2.0,
+        "p90": 5.0,
+        "p99": 11.0,
+        "maximo": 23
+      }
+    },
+    "validation": {
+      "total_relaciones": 1238,
+      "consultas_con_qrels": 500,
+      "consultas_con_relevantes": 500,
+      "consultas_sin_relevantes": 0,
+      "pares_duplicados": 0,
+      "distribucion_scores": {
+        "1": 1238
+      },
+      "relevantes_por_consulta": {
+        "minimo": 1,
+        "promedio": 2.48,
+        "mediana_p50": 2.0,
+        "p90": 5.0,
+        "p99": 10.0,
+        "maximo": 20
+      }
+    },
+    "test": {
+      "total_relaciones": 1706,
+      "consultas_con_qrels": 648,
+      "consultas_con_relevantes": 648,
+      "consultas_sin_relevantes": 0,
+      "pares_duplicados": 0,
+      "distribucion_scores": {
+        "1": 1706
+      },
+      "relevantes_por_consulta": {
+        "minimo": 1,
+        "promedio": 2.63,
+        "mediana_p50": 2.0,
+        "p90": 5.0,
+        "p99": 10.0,
+        "maximo": 15
+      }
+    }
+  }
+}

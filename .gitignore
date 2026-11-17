@@ -1,0 +1,40 @@
+# Configuración local, credenciales y entornos
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Python y herramientas
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Datos, índices y modelos grandes
+data/raw/
+data/processed/
+*.faiss
+*.npy
+*.npz
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
+# Rankings pesados; conservar métricas JSON/CSV/Markdown
+results/*.trec
+
+# Configuración personal del editor
+.vscode/
+.idea/
+
+# Archivos temporales
+*.log
+*.tmp

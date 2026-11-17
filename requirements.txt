@@ -1,0 +1,10 @@
+datasets
+scikit-learn
+ir-measures
+numpy
+sentence-transformers
+faiss-cpu
+python-dotenv
+# PyTorch se instala por separado con CUDA en Windows.
+# Ver instrucciones de instalación en README.md.
+
