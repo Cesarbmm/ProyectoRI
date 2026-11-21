@@ -6,7 +6,7 @@ import { SearchForm } from "./components/SearchForm";
 import { useDockMotion, scrollHome } from "./lib/useDockMotion";
 import { useEngine } from "./lib/useEngine";
 import { useSearch } from "./lib/useSearch";
-import type { ModelChoice, ModelId } from "./lib/types";
+import { DEFAULT_MODEL, type ModelChoice, type ModelId } from "./lib/types";
 
 type View = "search" | "evaluation" | "about";
 const hashView = (): View =>
@@ -17,7 +17,7 @@ const hashView = (): View =>
       : "search";
 export default function App() {
   const [view, setView] = useState<View>(hashView);
-  const [choice, setChoice] = useState<ModelChoice>("automatic");
+  const [choice, setChoice] = useState<ModelChoice>(DEFAULT_MODEL);
   const [compact, setCompact] = useState(false);
   const [resetToken, setResetToken] = useState(0);
   const [outputHeight, setOutputHeight] = useState(0);
@@ -93,7 +93,7 @@ export default function App() {
       motion.capture();
       search.cancel();
       setCompact(false);
-      setChoice("automatic");
+      setChoice(DEFAULT_MODEL);
       setResetToken((value) => value + 1);
       setOutputHeight(0);
       navigate("search");
@@ -138,12 +138,16 @@ export default function App() {
                   className="brand-home"
                   type="button"
                   aria-label="FiQA, back to home"
+                  aria-describedby="brand-caption"
                   onClick={home}
                 >
                   <span className="brand-word">
                     F<span className="brand-i">i</span>QA
                   </span>
                   <span className="orbit" aria-hidden="true" />
+                  <span id="brand-caption" className="brand-caption">
+                    Financial Search
+                  </span>
                 </button>
               </h1>
               <SearchForm

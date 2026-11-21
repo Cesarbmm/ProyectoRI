@@ -9,7 +9,7 @@ export function About() {
       </header>
       <div className="about-intro">
         <div>
-          <h2>One corpus. Five perspectives.</h2>
+          <h2>One corpus. Four perspectives.</h2>
           <p>
             FiQA is a university information retrieval project using the BEIR
             financial dataset. It retrieves existing English documents; it does
@@ -49,13 +49,6 @@ export function About() {
           <dt>BGE + FAISS</dt>
           <dd>BAAI/bge-base-en-v1.5 embeddings with exact vector search.</dd>
         </div>
-        <div>
-          <dt>Hybrid BM25 + BGE</dt>
-          <dd>
-            RRF fusion of lexical and semantic rankings. This is the model used
-            by Automatic.
-          </dd>
-        </div>
       </dl>
       <div className="about-bottom">
         <h2>From evaluation to search</h2>
@@ -65,9 +58,9 @@ export function About() {
           queries. The BGE embeddings and FAISS index remain unchanged.
         </p>
         <p>
-          Automatic selects the final hybrid model; it is not a sixth algorithm.
-          It does not switch algorithms based on your text or estimate relevance
-          for a free-text query.
+          BGE + FAISS is the default model for semantic retrieval. Jaccard,
+          TF-IDF and BM25 remain available for lexical search. Hybrid results
+          are preserved only as a historical reference in Evaluation.
         </p>
       </div>
     </section>

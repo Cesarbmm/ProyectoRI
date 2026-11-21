@@ -1,6 +1,9 @@
 import { useEffect, useState, type FormEvent, type Ref } from "react";
 import {
   LABELS,
+  DEFAULT_MODEL,
+  DEFAULT_MODEL_LABEL,
+  isActiveModel,
   type ModelChoice,
   type ModelId,
   type ModelsInfo,
@@ -43,11 +46,7 @@ export function SearchForm({
   const [query, setQuery] = useState("");
   const [topK, setTopK] = useState(5);
   const [compare, setCompare] = useState(false);
-  const [compared, setCompared] = useState<ModelId[]>([
-    "bm25",
-    "bge",
-    "hybrid",
-  ]);
+  const [compared, setCompared] = useState<ModelId[]>(["bm25", "bge"]);
   const [error, setError] = useState("");
   const [suggestionsOpen, setSuggestionsOpen] = useState(true);
   useEffect(() => {
@@ -58,7 +57,9 @@ export function SearchForm({
     setCompare(false);
     setError("");
   }, [resetToken]);
-  const available = models?.models ?? [];
+  const available = (models?.models ?? []).filter((model) =>
+    isActiveModel(model.id),
+  );
   const availableIds = new Set(available.map((m) => m.id));
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -110,14 +111,16 @@ export function SearchForm({
             onChange={onChoice}
             options={[
               {
-                value: "automatic",
-                label: "Automatic",
-                disabled: connected && !availableIds.has("hybrid"),
+                value: DEFAULT_MODEL,
+                label: DEFAULT_MODEL_LABEL,
+                disabled: connected && !availableIds.has(DEFAULT_MODEL),
               },
-              ...available.map((model) => ({
-                value: model.id,
-                label: LABELS[model.id],
-              })),
+              ...available
+                .filter((model) => model.id !== DEFAULT_MODEL)
+                .map((model) => ({
+                  value: model.id as ModelChoice,
+                  label: LABELS[model.id],
+                })),
             ]}
           />
         </div>
@@ -125,10 +128,7 @@ export function SearchForm({
           className="primary"
           type="submit"
           disabled={
-            busy ||
-            !connected ||
-            (!compare &&
-              !availableIds.has(choice === "automatic" ? "hybrid" : choice))
+            busy || !connected || (!compare && !availableIds.has(choice))
           }
         >
           {busy ? "Searching…" : "Search"}
@@ -164,7 +164,7 @@ export function SearchForm({
       </div>
       {compare && (
         <fieldset className="comparison-models" disabled={busy}>
-          <legend>Select 2 to 5 models</legend>
+          <legend>Select 2 to 4 models</legend>
           {available.map(({ id }) => (
             <label key={id}>
               <input

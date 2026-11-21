@@ -17,7 +17,7 @@ export async function chooseModel(page: Page, model: ModelChoice) {
   await page.getByRole("combobox", { name: "Retrieval model" }).click();
   await page
     .getByRole("option", {
-      name: model === "automatic" ? "Automatic" : LABELS[model],
+      name: model === "bge" ? "Default (BGE + FAISS)" : LABELS[model],
       exact: true,
     })
     .click();

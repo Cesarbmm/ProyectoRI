@@ -765,7 +765,7 @@ details[open] summary {
   border-radius: 8px;
   transition: width 0.4s;
 }
-.hybrid-bar {
+.recommended-bar {
   background: var(--copper);
 }
 .chart-caption {

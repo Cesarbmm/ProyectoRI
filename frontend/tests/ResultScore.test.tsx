@@ -77,4 +77,14 @@ it("keeps final evaluation metrics while removing their provenance disclosure", 
   expect(screen.getByRole("heading", { name: "Evaluation" })).toBeVisible();
   expect(screen.getByRole("cell", { name: "0.349604" })).toBeVisible();
   expect(document.querySelector(".provenance")).toBeNull();
+  const recommended = screen.getByRole("row", {
+    name: /BGE \+ FAISS 0.347148/,
+  });
+  expect(recommended).toHaveClass("highlight-row");
+  const historical = screen.getByRole("row", {
+    name: /Hybrid BM25 \+ BGE \(historical\)/,
+  });
+  expect(historical).not.toHaveClass("highlight-row");
+  expect(historical).toHaveTextContent("0.349604");
+  expect(document.querySelectorAll(".recommended-bar")).toHaveLength(1);
 });

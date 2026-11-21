@@ -26,12 +26,24 @@ test("pantalla inicial, navegación, benchmark y accesibilidad", async ({
   await expect(
     page.getByRole("heading", { name: "FiQA, back to home", exact: true }),
   ).toBeVisible();
-  await expect(page.getByLabel("Retrieval model")).toHaveText("Automatic");
+  await expect(page.getByLabel("Retrieval model")).toHaveText(
+    "Default (BGE + FAISS)",
+  );
+  await expect(page.locator(".brand-caption")).toHaveText("Financial Search");
+  const logo = (await page.locator(".brand-home").boundingBox())!;
+  const caption = (await page.locator(".brand-caption").boundingBox())!;
+  expect(caption.x + caption.width).toBeLessThanOrEqual(
+    logo.x + logo.width + 1,
+  );
+  expect(caption.y).toBeGreaterThan(logo.y + logo.height * 0.6);
   await expect(page.locator(".benchmark-panel, .site-header")).toHaveCount(0);
   await expect(page.getByText("Suggestions", { exact: true })).toBeVisible();
   await expect(page.getByText("0.350006", { exact: true })).toHaveCount(0);
   await page.getByLabel("Retrieval model").click();
-  await expect(page.getByRole("listbox").getByRole("option")).toHaveCount(6);
+  await expect(page.getByRole("listbox").getByRole("option")).toHaveCount(4);
+  await expect(
+    page.getByRole("option", { name: /hybrid|automatic/i }),
+  ).toHaveCount(0);
   await page.keyboard.press("Escape");
   await page.getByRole("link", { name: "Evaluation", exact: true }).click();
   await expect(page.getByRole("table")).toBeVisible();
@@ -135,9 +147,9 @@ test("error HTTP real de la capa de transporte, sin éxito falso", async ({
     "The search engine is not ready",
   );
   await expect(page.locator(".result")).toHaveCount(0);
-  await expect(
-    page.getByText("Automatic selected", { exact: false }),
-  ).toHaveCount(0);
+  await expect(page.getByText("Default model:", { exact: false })).toHaveCount(
+    0,
+  );
 });
 
 test("desconexión, reconexión y búsqueda vacía real", async ({ page }) => {
@@ -199,7 +211,7 @@ test("menú oscuro legible, selección por teclado y cierre sin cambiar el model
   const menu = page.getByRole("listbox");
   await expect(menu).toHaveCSS("background-color", "rgb(32, 34, 40)");
   const selectedOption = page.getByRole("option", {
-    name: "Automatic",
+    name: "Default (BGE + FAISS)",
     exact: true,
   });
   expect(
@@ -216,16 +228,16 @@ test("menú oscuro legible, selección por teclado y cierre sin cambiar el model
     }),
   ).toBe(true);
   await expect(
-    page.getByRole("option", { name: "Automatic", exact: true }),
+    page.getByRole("option", { name: "Default (BGE + FAISS)", exact: true }),
   ).toHaveAttribute("aria-selected", "true");
   await page.keyboard.press("End");
   await page.keyboard.press("Enter");
-  await expect(trigger).toHaveText("Hybrid BM25 + BGE");
+  await expect(trigger).toHaveText("BM25");
   await trigger.click();
   await page.keyboard.press("Escape");
   await expect(menu).toHaveCount(0);
-  await expect(trigger).toHaveText("Hybrid BM25 + BGE");
-  await chooseModel(page, "automatic");
+  await expect(trigger).toHaveText("BM25");
+  await chooseModel(page, "bge");
   expect(await trigger.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(
     true,
   );

@@ -1,7 +1,12 @@
 import { z } from "zod";
 export const modelId = z.enum(["jaccard", "tfidf", "bm25", "bge", "hybrid"]);
 export type ModelId = z.infer<typeof modelId>;
-export type ModelChoice = ModelId | "automatic";
+export const ACTIVE_MODEL_IDS = ["jaccard", "tfidf", "bm25", "bge"] as const;
+export type ModelChoice = (typeof ACTIVE_MODEL_IDS)[number];
+export const DEFAULT_MODEL: ModelChoice = "bge";
+export const DEFAULT_MODEL_LABEL = "Default (BGE + FAISS)";
+export const isActiveModel = (model: ModelId): model is ModelChoice =>
+  ACTIVE_MODEL_IDS.some((active) => active === model);
 export const modelsSchema = z.object({
   default_model: modelId,
   models: z
@@ -55,8 +60,11 @@ export const LABELS: Record<ModelId, string> = {
   bge: "BGE + FAISS",
   hybrid: "Hybrid BM25 + BGE",
 };
-export const resolveModel = (choice: ModelChoice): ModelId =>
-  choice === "automatic" ? "hybrid" : choice;
+export function resolveModel(choice: ModelChoice): ModelId {
+  if (!isActiveModel(choice))
+    throw new Error("This model is not available for web searches.");
+  return choice;
+}
 export const number = (value: number, digits = 6) =>
   value.toLocaleString("en-US", {
     minimumFractionDigits: digits,

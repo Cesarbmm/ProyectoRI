@@ -1,13 +1,13 @@
 import { expect, test } from "@playwright/test";
 import { chooseModel } from "./helpers";
 import { readFileSync } from "node:fs";
-import { type ModelId, LABELS } from "../src/lib/types";
+import { ACTIVE_MODEL_IDS, type ModelId, LABELS } from "../src/lib/types";
 
 const benchmarkData = JSON.parse(
   readFileSync(new URL("../src/data/benchmark.json", import.meta.url), "utf8"),
 ) as { current: { model: ModelId; metrics: Record<string, number> }[] };
 
-test("public site searches all five complete systems, automatic, metrics and comparison", async ({
+test("public site searches four active systems, defaults to BGE and keeps historical evaluation", async ({
   page,
   request,
   baseURL,
@@ -35,12 +35,15 @@ test("public site searches all five complete systems, automatic, metrics and com
   const ready = await request.get(`${api}/ready`);
   expect(ready.status()).toBe(200);
   expect((await ready.json()).lexical_preprocessing).toBe("stemming");
-  const models = ["jaccard", "tfidf", "bm25", "bge", "hybrid"] as ModelId[];
+  const models = [...ACTIVE_MODEL_IDS];
   const catalog = await request.get(`${api}/models`);
   expect(catalog.status()).toBe(200);
   const available = await catalog.json();
   expect(
-    available.models.map((model: { id: string }) => model.id).sort(),
+    available.models
+      .map((model: { id: string }) => model.id)
+      .filter((id: string) => id !== "hybrid")
+      .sort(),
   ).toEqual([...models].sort());
   expect(available.lexical_configuration).toEqual({
     morphology: "stemming",
@@ -64,10 +67,23 @@ test("public site searches all five complete systems, automatic, metrics and com
     page.getByText("Search engine connected", { exact: true }),
   ).toBeVisible();
   await page.getByLabel("Results", { exact: true }).selectOption("3");
+  await expect(page.getByLabel("Retrieval model")).toHaveText(
+    "Default (BGE + FAISS)",
+  );
+  await expect(page.locator(".brand-caption")).toHaveText("Financial Search");
+  await page.getByLabel("Retrieval model").click();
+  await expect(page.getByRole("listbox").getByRole("option")).toHaveCount(4);
+  await expect(
+    page.getByRole("option", { name: /hybrid|automatic/i }),
+  ).toHaveCount(0);
+  await page.keyboard.press("Escape");
   await page
     .getByLabel("Query", { exact: true })
     .fill("What is the difference between APR and APY?");
-  for (const model of ["automatic", ...models] as const) {
+  for (const model of [
+    "bge",
+    ...models.filter((model) => model !== "bge"),
+  ] as const) {
     await chooseModel(page, model);
     const done = page.waitForResponse(
       (response) =>
@@ -78,7 +94,7 @@ test("public site searches all five complete systems, automatic, metrics and com
     const response = await done;
     expect(response.status()).toBe(200);
     const data = await response.json();
-    expect(data.model).toBe(model === "automatic" ? "hybrid" : model);
+    expect(data.model).toBe(model);
     expect(data.count).toBe(3);
     await expect(page.locator(".result")).toHaveCount(3);
     await expect(page.locator(".document-preview").first()).toHaveText(
@@ -87,13 +103,15 @@ test("public site searches all five complete systems, automatic, metrics and com
     await expect(page.locator(".technical-score code").first()).toHaveText(
       String(data.results[0].score),
     );
-    if (model === "automatic")
+    if (model === "bge")
       await expect(
-        page.getByText("Automatic selected Hybrid BM25 + BGE", { exact: true }),
+        page.getByText("Default model: BGE + FAISS", { exact: true }),
       ).toBeVisible();
     if (model === "bge") expect(data.results[0].doc_id).toBe("263225");
   }
   await page.getByLabel("Compare models", { exact: true }).check();
+  await expect(page.getByRole("checkbox")).toHaveCount(5);
+  await expect(page.getByRole("checkbox", { name: /hybrid/i })).toHaveCount(0);
   for (const model of models)
     await page.getByLabel(LABELS[model], { exact: true }).check();
   const done = page.waitForResponse(
@@ -103,8 +121,8 @@ test("public site searches all five complete systems, automatic, metrics and com
   const compared = await done;
   expect(compared.status()).toBe(200);
   const comparison = await compared.json();
-  expect(comparison.rankings).toHaveLength(5);
-  await expect(page.locator(".ranking")).toHaveCount(5);
+  expect(comparison.rankings).toHaveLength(4);
+  await expect(page.locator(".ranking")).toHaveCount(4);
   for (const ranking of comparison.rankings) {
     const section = page.getByRole("region", {
       name: `Ranking ${LABELS[ranking.model as ModelId]}`,
@@ -119,7 +137,10 @@ test("public site searches all five complete systems, automatic, metrics and com
   for (const row of benchmarkData.current) {
     const tr = page.getByRole("row").filter({
       has: page.getByRole("rowheader", {
-        name: LABELS[row.model as ModelId],
+        name:
+          row.model === "hybrid"
+            ? `${LABELS.hybrid} (historical)`
+            : LABELS[row.model as ModelId],
         exact: true,
       }),
     });
@@ -127,5 +148,13 @@ test("public site searches all five complete systems, automatic, metrics and com
       row.metrics["MAP@1000"].toFixed(6),
     );
   }
+  await expect(page.locator(".highlight-row")).toContainText("BGE + FAISS");
+  await expect(page.locator(".recommended-bar")).toHaveCount(1);
+  await expect(
+    page
+      .locator(".chart-row")
+      .filter({ hasText: "Hybrid" })
+      .locator(".recommended-bar"),
+  ).toHaveCount(0);
   expect(errors).toEqual([]);
 });

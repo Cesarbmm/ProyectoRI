@@ -99,17 +99,18 @@ tres comprobaciones sean correctas. La API se consulta directamente, sin proxy
 de desarrollo obligatorio, lo que conserva el mismo contrato para la siguiente
 fase de despliegue.
 
-Automático comienza seleccionado y resuelve **exclusivamente a `hybrid`**. Se
-informa “Automatic selected Hybrid BM25 + BGE” al recibir una búsqueda correcta.
-Se ignora el `default_model=bge` del servidor solo para esta preferencia explícita
-del producto; los modelos y sus algoritmos no cambian.
+El selector ofrece cuatro entradas: **Default (BGE + FAISS)**, Jaccard, TF-IDF y
+BM25. BGE aparece una sola vez y envía `model=bge`. El catálogo del backend se
+filtra mediante una política central de modelos activos. El híbrido conserva
+compatibilidad en la API para reproducción histórica, pero nunca se selecciona
+ni se envía en las comparaciones de la web.
 
 Las sugerencias rellenan la consulta y sitúan el foco en el campo. Buscar o Enter
 envía la solicitud. Top-K admite 3, 5, 10 y 20. La comparación usa su propio conjunto
-de modelos y exige al menos dos. Cada documento muestra posición, ID, fragmento,
+de modelos y exige entre dos y cuatro. Cada documento muestra posición, ID, fragmento,
 un control nativo `details` para leer el texto completo. La puntuación lleva una
 etiqueta específica: Term overlap (Jaccard, porcentaje), Text similarity (TF-IDF),
-Lexical score (BM25), Semantic affinity (BGE) o Fusion score (híbrido). El botón de
+Lexical score (BM25) o Semantic affinity (BGE). El botón de
 información explica su significado y `Technical score` conserva el valor exacto
 de la API. Las etiquetas redondeadas no cambian los scores ni el orden del ranking.
 La consulta y las opciones se conservan al cambiar de vista.
@@ -132,9 +133,10 @@ Las métricas pertenecen a **FiQA test: 648 consultas**, con qrels y profundidad
 1.000. Se publican MAP@1000, Precision@10 (`P@10` en los JSON), Recall@100 y NDCG@10.
 No se calcula ninguna de estas métricas para consultas libres.
 
-| Serie | Fuente | MAP@1000 híbrido |
+| Modelo | Fuente | MAP@1000 |
 |---|---|---:|
-| Configuración final · Snowball | `results/preprocessing_v1/final_test/stemming_<modelo>_test.json` | 0.349604 |
+| BGE + FAISS, predeterminado | `results/service_bge_test_metrics.json` | 0.347148 |
+| Híbrido, referencia histórica | `results/preprocessing_v1/final_test/stemming_hybrid_test.json` | 0.349604 |
 
 BGE utiliza su resultado original porque no se modificó. La interfaz muestra
 exclusivamente la configuración final en Evaluación; no hay métricas en el
@@ -144,11 +146,11 @@ como configuración de la búsqueda actual. No se utiliza la etiqueta «Baseline
 en la interfaz. El benchmark se identifica por configuración y split y se
 distingue de la latencia y puntuación de una búsqueda.
 
-Automático usa el híbrido final; no afirma significación estadística de su
-pequeña ventaja sobre BGE. Las
-búsquedas actuales se realizan con el servicio Snowball ya congelado:
-BM25 `k1=0.8`, `b=0.75`; RRF `k=10`, peso BGE `0.9`. No se revierte ni reajusta esa
-configuración para reproducir un número histórico.
+BGE es el predeterminado por decisión técnica del producto, sin afirmar una
+superioridad estadística nueva. El gráfico y la tabla resaltan BGE; la fila
+híbrida queda identificada como histórica y sus cifras originales se conservan.
+El servicio léxico mantiene Snowball y BM25 `k1=0.8`, `b=0.75`. RRF `k=10` y peso
+BGE `0.9` se conservan exclusivamente para reproducir el híbrido histórico.
 
 `frontend/scripts/sync-benchmark.mjs` lee los archivos académicos, comprueba split,
 número de consultas y rango de métricas, y exporta únicamente agregados. Registra
@@ -198,7 +200,7 @@ npm run format:check
 | Comprobación | Resultado |
 |---|---|
 | Backend | **108 pruebas correctas**, incluidas las 82 originales |
-| Frontend, Vitest/Testing Library | **39 pruebas correctas** |
+| Frontend, Vitest/Testing Library | **42 pruebas correctas** |
 | Playwright, validación completa previa | **25 pruebas correctas**: 8 desktop, 8 tablet, 8 móvil y 1 recorrido completo de API real |
 | Playwright, revisión rápida en inglés | **16 pruebas correctas**: 8 desktop y 8 móvil, con búsquedas reales y sin nuevas capturas |
 | Compilación TypeScript y Vite | Correcta; artefacto estático en `frontend/dist/` |
@@ -214,9 +216,9 @@ en Linux; `FIQA_PYTHON` permite otra ruta. Las pruebas arrancan FastAPI con
 carece de índices completos no se convierte en una prueba simulada ni se omite
 silenciosamente.
 
-Los recorridos positivos pasan por la API real: Automático, cambio a cada uno de
-los cinco modelos, Top-K, Enter, expansión, ranking vacío real y comparación de
-los cinco modelos. Se compara el fragmento visible con la respuesta HTTP y se
+Los recorridos positivos pasan por la API real: BGE predeterminado, cambio a cada uno de
+los cuatro modelos activos, Top-K, Enter, expansión, ranking vacío real y comparación de
+los cuatro modelos. Se compara el fragmento visible con la respuesta HTTP y se
 conserva la regresión BGE: primer documento `263225` para APR/APY.
 
 Solo las pruebas de fallo inyectan HTTP 503 o una desconexión, y la prueba de
@@ -244,7 +246,7 @@ se eliminaron el header de navegación y el panel lateral de métricas. El foote
 solo contiene conexión y enlaces a Evaluación/Acerca (y Buscar en esas vistas).
 Las cifras del corpus siguen disponibles en Acerca.
 
-El selector muestra «Automático», sin recortes, con una flecha visible y un menú
+El selector muestra «Default (BGE + FAISS)», sin recortes, con una flecha visible y un menú
 oscuro propio. Admite ratón/táctil y teclado: flechas, Home, End, Enter, Espacio,
 Escape y Tab. La selección se informa mediante roles de combobox/listbox y no
 depende del estilo de los menús nativos de Windows. Top-K conserva el selector

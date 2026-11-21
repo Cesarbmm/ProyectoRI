@@ -92,11 +92,7 @@ export function Results({
           <h2>
             {state.rankings!.length > 1 ? "Ranking comparison" : "Results"}
           </h2>
-          <p>
-            {state.automatic
-              ? "Automatic selected Hybrid BM25 + BGE"
-              : state.query}
-          </p>
+          <p>{state.isDefault ? "Default model: BGE + FAISS" : state.query}</p>
         </div>
         <span>
           {number(state.elapsed!, 0)} ms{" "}

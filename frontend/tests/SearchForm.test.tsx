@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 import { SearchForm } from "../src/components/SearchForm";
@@ -9,6 +9,9 @@ const models: ModelsInfo = {
   models: [
     { id: "hybrid", label: "Hybrid", score_type: "rrf" },
     { id: "bm25", label: "BM25", score_type: "bm25" },
+    { id: "bge", label: "BGE", score_type: "cosine_embedding" },
+    { id: "jaccard", label: "Jaccard", score_type: "jaccard" },
+    { id: "tfidf", label: "TF-IDF", score_type: "cosine_tfidf" },
   ],
   lexical_configuration: { morphology: "stemming", bm25_k1: 0.8, bm25_b: 0.75 },
 };
@@ -17,7 +20,7 @@ function form(connected = true) {
   const onChoice = vi.fn();
   render(
     <SearchForm
-      choice="automatic"
+      choice="bge"
       onChoice={onChoice}
       connected={connected}
       busy={false}
@@ -28,14 +31,31 @@ function form(connected = true) {
   return { submit, onChoice };
 }
 describe("Formulario accesible", () => {
-  it("muestra Automatic inicialmente y busca con Enter", async () => {
+  it("defaults to BGE and searches with Enter", async () => {
     const { submit } = form();
     const user = userEvent.setup();
     expect(screen.getByLabelText("Retrieval model")).toHaveTextContent(
-      "Automatic",
+      "Default (BGE + FAISS)",
     );
     await user.type(screen.getByLabelText("Query"), "retirement{Enter}");
-    expect(submit).toHaveBeenCalledWith("retirement", "automatic", 5, null);
+    expect(submit).toHaveBeenCalledWith("retirement", "bge", 5, null);
+  });
+  it("offers exactly four models and excludes the historical hybrid from comparison", async () => {
+    form();
+    const user = userEvent.setup();
+    await user.click(screen.getByLabelText("Retrieval model"));
+    expect(
+      within(screen.getByRole("listbox")).getAllByRole("option"),
+    ).toHaveLength(4);
+    expect(
+      screen.queryByRole("option", { name: /hybrid|automatic/i }),
+    ).not.toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    await user.click(screen.getByLabelText("Compare models"));
+    expect(screen.getAllByRole("checkbox")).toHaveLength(5);
+    expect(
+      screen.queryByRole("checkbox", { name: /hybrid/i }),
+    ).not.toBeInTheDocument();
   });
   it("rechaza espacios vacíos y conserva el foco", async () => {
     const { submit } = form();

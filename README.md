@@ -2,6 +2,10 @@
 
 Proyecto académico de **Recuperación de Información (RI)** sobre el corpus financiero **FiQA (BEIR)**. Datos de referencia: `BeIR/fiqa` (corpus y consultas) y `BeIR/fiqa-qrels` (juicios de relevancia). Implementa cuatro familias de recuperación, un sistema híbrido y una API REST para integrarse con una interfaz web.
 
+La web ofrece únicamente **Jaccard, TF-IDF, BM25 y BGE + FAISS**. La opción
+predeterminada es **Default (BGE + FAISS)**. El híbrido se conserva para
+reproducción histórica y como fila histórica en Evaluación, sin ser seleccionable.
+
 > **Estado:** backend y frontend React funcionales y verificados localmente. La publicación pública sigue pendiente. Los archivos de datos y los índices no se almacenan en Git.
 
 El frontend definitivo está en [`frontend/`](frontend/), con búsqueda real,
@@ -260,7 +264,7 @@ Configuración de Vercel, capacidad del backend y verificación de despliegues:
 
 El frontend estático y FastAPI se alojan en dos proyectos Vercel independientes.
 La API utiliza Python 3.12, PyTorch CPU y Large Functions, con corpus, Snowball,
-FAISS y pesos BGE completos verificados durante el build. Los cinco modelos,
+FAISS y pesos BGE completos verificados durante el build. Los cuatro modelos activos,
 la comparación y el frontend público pasaron pruebas reales sin autenticación.
 El Preview midió aproximadamente 1,26 GB de RAM, dentro de los 2 GB de Hobby.
 No se activaron recursos de pago; se aplican las cuotas y límites del plan.

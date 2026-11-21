@@ -1,11 +1,12 @@
 import { useState } from "react";
 import {
   benchmarkData,
+  benchmarkLabel,
   METRICS,
   metricLabel,
   type Metric,
 } from "../lib/benchmark";
-import { LABELS, number, type ModelId } from "../lib/types";
+import { DEFAULT_MODEL, number, type ModelId } from "../lib/types";
 
 export function Evaluation() {
   const [metric, setMetric] = useState<Metric>("MAP@1000");
@@ -19,12 +20,14 @@ export function Evaluation() {
       <header className="page-heading">
         <div>
           <h1 id="evaluation-title">Evaluation</h1>
-          <p>Five models, the same 648 FiQA test queries.</p>
+          <p>Four active models, the same 648 FiQA test queries.</p>
         </div>
       </header>
       <p className="evaluation-note">
         Final configuration: Snowball and BM25 k1=0.8, b=0.75. Selected on
         validation and checked on test without retuning. BGE remains unchanged.
+        BGE + FAISS is the default. Hybrid results are retained as a historical
+        reference.
       </p>
       <div className="evaluation-layout">
         <div className="chart-panel glass">
@@ -49,11 +52,13 @@ export function Evaluation() {
           >
             {rows.map((row) => (
               <div className="chart-row" key={row.model}>
-                <span>{LABELS[row.model as ModelId]}</span>
+                <span>{benchmarkLabel(row.model as ModelId)}</span>
                 <div className="bar-track">
                   <div
                     className={
-                      row.model === "hybrid" ? "bar hybrid-bar" : "bar"
+                      row.model === DEFAULT_MODEL
+                        ? "bar recommended-bar"
+                        : "bar"
                     }
                     style={{
                       width: `${(row.metrics[metric] / maximum) * 100}%`,
@@ -82,7 +87,8 @@ export function Evaluation() {
             judgments.
           </p>
           <p className="muted">
-            Fixed RRF: k=10, BGE weight=0.9. Evaluation depth: 1,000 documents.
+            BGE + FAISS is recommended for semantic retrieval. Evaluation depth:
+            1,000 documents.
           </p>
         </div>
       </div>
@@ -108,9 +114,9 @@ export function Evaluation() {
             {rows.map((row) => (
               <tr
                 key={row.model}
-                className={row.model === "hybrid" ? "highlight-row" : ""}
+                className={row.model === DEFAULT_MODEL ? "highlight-row" : ""}
               >
-                <th scope="row">{LABELS[row.model as ModelId]}</th>
+                <th scope="row">{benchmarkLabel(row.model as ModelId)}</th>
                 {METRICS.map((key) => (
                   <td key={key}>{number(row.metrics[key])}</td>
                 ))}

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { api } from "./api";
 import {
   resolveModel,
+  DEFAULT_MODEL,
+  isActiveModel,
   type ModelChoice,
   type ModelId,
   type SearchResponse,
@@ -11,7 +13,7 @@ export type SearchState = {
   status: "idle" | "loading" | "success" | "error";
   error?: string;
   query?: string;
-  automatic?: boolean;
+  isDefault?: boolean;
   rankings?: SearchResponse[];
   elapsed?: number;
 };
@@ -30,13 +32,17 @@ export function useSearch() {
     active.current = controller;
     const context = {
       query: query.trim(),
-      automatic: !comparison && choice === "automatic",
+      isDefault: !comparison && choice === DEFAULT_MODEL,
     };
     setState({ status: "loading", ...context });
     try {
       const selected = resolveModel(choice);
       let rankings: SearchResponse[], elapsed: number;
       if (comparison) {
+        if (comparison.some((model) => !isActiveModel(model)))
+          throw new Error(
+            "Historical models are not available for web comparison.",
+          );
         const result = await api.compare(
           context.query,
           comparison,

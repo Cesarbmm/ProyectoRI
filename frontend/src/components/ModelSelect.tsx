@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import type { ModelChoice } from "../lib/types";
+import { DEFAULT_MODEL_LABEL, type ModelChoice } from "../lib/types";
 
 type Option = { value: ModelChoice; label: string; disabled?: boolean };
 export function ModelSelect({
@@ -99,7 +99,7 @@ export function ModelSelect({
         onClick={() => (open ? setOpen(false) : reveal())}
         onBlur={() => setOpen(false)}
       >
-        <span>{selected?.label || "Automatic"}</span>
+        <span>{selected?.label || DEFAULT_MODEL_LABEL}</span>
         <svg
           aria-hidden="true"
           width="16"

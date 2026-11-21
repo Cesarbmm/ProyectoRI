@@ -19,7 +19,10 @@ los embeddings y los resultados académicos.
 Equipo: `fonfini123-1060`, plan **Hobby**. Ambos proyectos incluyen archivos fuera
 de Root Directory: el frontend verifica `../results/`; el backend empaqueta
 `../src/ri_fiqa`. La configuración sigue siendo Snowball, BM25 `k1=0.8`, `b=0.75`,
-RRF `k=10`, peso BGE `0.9`. Automático resuelve a `hybrid`.
+RRF `k=10`, peso BGE `0.9` para reproducción histórica. La web ofrece cuatro
+modelos y usa **Default (BGE + FAISS)**. El híbrido no se puede seleccionar ni
+incluir en una comparación web; su código, API y métricas se conservan para
+reproducir los experimentos originales.
 
 ## Recursos reproducibles
 
@@ -83,8 +86,9 @@ Git, capturas ni trazas.
 | Comparación pública Top-20 | Cinco rankings de 20 documentos; respuesta de 106.689 bytes |
 | TypeScript/Vite y benchmark | Build correcto y métricas coincidentes con las fuentes |
 
-El E2E verifica Automático → híbrido, los cinco modelos, rankings/textos/scores
-devueltos por HTTP, comparación, CORS y la tabla real de métricas. BGE conserva
+El E2E web verifica BGE predeterminado, los cuatro modelos activos, rankings/textos/scores
+devueltos por HTTP, comparación, CORS y la tabla real de métricas, con BGE resaltado
+y el híbrido etiquetado como histórico. BGE conserva
 el primer documento `263225` para APR/APY. Sin respuestas simuladas ni capturas nuevas.
 
 Vercel reporta una Function de aproximadamente **932 MB**. Ubuntu/WSL midió

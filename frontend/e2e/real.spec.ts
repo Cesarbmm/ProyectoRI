@@ -45,10 +45,10 @@ test("flujo completo contra FastAPI y corpus reales; capturas de entrega", async
   const response = await responsePromise;
   expect(response.ok()).toBe(true);
   const body = await response.json();
-  expect(body.model).toBe("hybrid");
+  expect(body.model).toBe("bge");
   expect(body.count).toBe(5);
   await expect(
-    page.getByText("Automatic selected Hybrid BM25 + BGE", { exact: true }),
+    page.getByText("Default model: BGE + FAISS", { exact: true }),
   ).toBeVisible();
   await expect(page.locator(".result")).toHaveCount(5);
   await expect(page.locator(".document-preview").first()).toHaveText(
@@ -60,7 +60,7 @@ test("flujo completo contra FastAPI y corpus reales; capturas de entrega", async
       path: resolve(shots, "results.png"),
       fullPage: true,
     });
-  for (const model of ["jaccard", "tfidf", "bm25", "bge", "hybrid"] as const) {
+  for (const model of ["jaccard", "tfidf", "bm25", "bge"] as const) {
     await chooseModel(page, model);
     const done = page.waitForResponse(
       (r) => r.url().endsWith("/search") && r.request().method() === "POST",
@@ -88,11 +88,11 @@ test("flujo completo contra FastAPI y corpus reales; capturas de entrega", async
     .last()
     .click();
   const compared = await (await comparison).json();
-  expect(compared.rankings).toHaveLength(5);
+  expect(compared.rankings).toHaveLength(4);
   await expect(
     page.getByRole("heading", { name: "Ranking comparison" }),
   ).toBeVisible();
-  await expect(page.locator(".ranking")).toHaveCount(5);
+  await expect(page.locator(".ranking")).toHaveCount(4);
   if (process.env.FIQA_CAPTURE === "1")
     await page.screenshot({
       animations: "disabled",

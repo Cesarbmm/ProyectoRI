@@ -1,5 +1,7 @@
 import data from "../data/benchmark.json";
-import type { ModelId } from "./types";
+import { LABELS, type ModelId } from "./types";
+export const benchmarkLabel = (model: ModelId) =>
+  model === "hybrid" ? `${LABELS[model]} (historical)` : LABELS[model];
 export type Series = "historical" | "current";
 export const METRICS = ["MAP@1000", "P@10", "Recall@100", "NDCG@10"] as const;
 export type Metric = (typeof METRICS)[number];

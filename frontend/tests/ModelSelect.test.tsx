@@ -3,16 +3,16 @@ import userEvent from "@testing-library/user-event";
 import { expect, it, vi } from "vitest";
 import { ModelSelect } from "../src/components/ModelSelect";
 const options = [
-  { value: "automatic" as const, label: "Automatic" },
+  { value: "bge" as const, label: "Default (BGE + FAISS)" },
   { value: "bm25" as const, label: "BM25" },
-  { value: "bge" as const, label: "BGE + FAISS", disabled: true },
+  { value: "tfidf" as const, label: "TF-IDF", disabled: true },
 ];
 it("navega por teclado, evita opciones deshabilitadas y confirma con Enter", async () => {
   const onChange = vi.fn();
   const user = userEvent.setup();
   render(
     <ModelSelect
-      value="automatic"
+      value="bge"
       options={options}
       disabled={false}
       onChange={onChange}
@@ -36,7 +36,7 @@ it("cierra con Tab o al pulsar fuera sin cambiar el modelo", async () => {
   render(
     <>
       <ModelSelect
-        value="automatic"
+        value="bge"
         options={options}
         disabled={false}
         onChange={onChange}

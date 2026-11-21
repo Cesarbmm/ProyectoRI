@@ -6,6 +6,10 @@ CPU. Retrieval code, embeddings, academic metrics and the frontend are unchanged
 Public API: https://fiqa-api.vercel.app/docs.
 Public frontend: https://fiqa-indol.vercel.app.
 
+The web exposes four active models and defaults to BGE + FAISS. The hybrid API
+is retained for historical experiment reproduction; the frontend never selects
+or compares it. The five-model API checks below also cover that legacy behavior.
+
 The isolated `fiqa-api` project uses Root Directory `backend`, the FastAPI preset,
 Fluid Compute and Large Functions beta. The frontend remains in `fiqa`, rooted at
 `frontend`. Enable source files outside the root directory: the build copies the

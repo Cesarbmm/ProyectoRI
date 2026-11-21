@@ -4,8 +4,8 @@ import { resolveModel } from "../src/lib/types";
 import { benchmark, benchmarkData } from "../src/lib/benchmark";
 afterEach(() => vi.unstubAllGlobals());
 describe("Contrato API y benchmark", () => {
-  it("Automatic resuelve exclusivamente a hybrid", () => {
-    expect(resolveModel("automatic")).toBe("hybrid");
+  it("Default uses BGE exclusively", () => {
+    expect(resolveModel("bge")).toBe("bge");
     expect(resolveModel("bge")).toBe("bge");
   });
   it("envía modelo, consulta y Top-K a la API real configurada", async () => {
@@ -13,7 +13,7 @@ describe("Contrato API y benchmark", () => {
       new Response(
         JSON.stringify({
           query: "banks",
-          model: "hybrid",
+          model: "bge",
           count: 0,
           results: [],
           elapsed_ms: 21,
@@ -23,14 +23,14 @@ describe("Contrato API y benchmark", () => {
     vi.stubGlobal("fetch", fetcher);
     const response = await createApi("http://localhost:8123").search(
       "banks",
-      resolveModel("automatic"),
+      resolveModel("bge"),
       20,
     );
     expect(response.count).toBe(0);
     expect(fetcher.mock.calls[0][0]).toBe("http://localhost:8123/search");
     expect(JSON.parse(fetcher.mock.calls[0][1].body)).toEqual({
       query: "banks",
-      model: "hybrid",
+      model: "bge",
       top_k: 20,
     });
   });
