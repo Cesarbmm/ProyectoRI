@@ -10,9 +10,9 @@ venv
 **/.env*
 !**/.env.example
 **/*.log
-data
-build
-docs
+/data
+/build
+/docs
 frontend/design
 frontend/test-results
 frontend/playwright-report

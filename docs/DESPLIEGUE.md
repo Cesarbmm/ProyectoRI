@@ -18,6 +18,7 @@ La selección sigue siendo Snowball, BM25 `k1=0.8`, `b=0.75`, RRF `k=10` y peso 
 - **Include source files outside of Root Directory**: activado. La comprobación
   del benchmark necesita `../results/`, no solo el JSON empaquetado del frontend.
 - Archivo versionado: `frontend/vercel.json`.
+- `VITE_API_URL` en Preview y Production: `https://fiqa-backend.onrender.com`.
 - El build en Vercel rechaza una URL ausente, HTTP, local o con credenciales.
   El desarrollo local sigue usando la API local.
 - `.vercel/` y todos los archivos de entorno locales están excluidos de Git.
@@ -113,7 +114,47 @@ con otras variables de Production.
 
 ## Estado de esta fase
 
-Proyecto configurado; publicación de prueba y producción pendientes de una URL
-HTTPS del backend completo y de configurar sus orígenes CORS. No hay una URL
-pública funcional validada todavía. Pruebas locales: 39 unitarias, build y un
-recorrido E2E completo de los cinco sistemas correctos. Sin nuevas capturas.
+Frontend compilado en Vercel, todavía **sin promoción ni dominio de producción**:
+
+- Preview: `https://fiqa-86gqyqo3w-fonfini123-1060.vercel.app` (build de 21 s).
+- Build Production sin dominio: `https://fiqa-g9imynjga-fonfini123-1060.vercel.app`
+  (build de 16 s). El primer despliegue de un proyecto no admite Preview; se
+  utilizó `--prod --skip-domain` antes de crear el Preview.
+- El HTML de Preview sirve `FiQA — Financial search`, comprobado con `vercel curl`
+  bajo Deployment Protection. Esta comprobación autenticada no implica acceso
+  público anónimo ni que las búsquedas funcionen.
+- No se ha desactivado Deployment Protection. `vercel curl` creó el bypass de
+  automatización del proyecto, sin exponer su valor ni guardarlo en el repositorio.
+
+El backend indicado responde por HTTPS, pero la comprobación del 21 de noviembre
+de 2026 devolvió `/health` 200, `/models` 200 y `/ready` **503**: corpus, índice
+invertido, FAISS, IDs y metadatos no encontrados. No devolvió CORS para el origen
+de Vercel. Las búsquedas Jaccard, TF-IDF y BM25 devolvieron 503; BGE agotó el timeout
+de 30 s y posteriormente salud devolvió 502. El E2E público **falló** en salud;
+no se declara validación pública correcta ni se promueve producción.
+
+El acceso MCP de Render, en el workspace confirmado por el usuario, solo enumera
+`ExamenRI`. Ese servicio no se modificó. Se necesita acceso al panel/servicio real
+de FiQA para revisar los archivos, capacidad y variables, instalar los recursos
+faltantes y configurar CORS.
+
+Se preparó un paquete completo **local, excluido de Git** para transferirlo al
+backend cuando se disponga de ese acceso:
+
+```powershell
+python scripts/package_runtime_assets.py
+```
+
+Genera `build/deployment/fiqa-runtime.tar.gz` y `runtime-manifest.json`. Comprueba
+57.638 documentos y 57.600 vectores de dimensión 768, registra SHA-256 de cada
+archivo y verifica que los bytes empaquetados coinciden. No recalcula embeddings
+ni índices, ni incluye credenciales. **No incluye el encoder BGE**, que también
+debe instalarse; es un paquete de corpus e índices, no un backend autosuficiente.
+
+La regla `/data` de `.vercelignore` está anclada a la raíz para excluir el corpus
+sin omitir `frontend/src/data/benchmark.json`; el build comprueba sus fuentes.
+
+Pruebas locales: 39 unitarias de frontend, 104 de backend, build y un recorrido
+E2E completo de los cinco sistemas correctos. El empaquetado verificó los hashes
+de los siete archivos originales. Sin nuevas capturas. Publicación final
+pendiente del backend.
