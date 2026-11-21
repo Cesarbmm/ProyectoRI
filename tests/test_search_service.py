@@ -4,6 +4,8 @@ import unittest
 from ri_fiqa.indexing import InvertedIndex
 from ri_fiqa.retrieval.common import SearchResult
 from ri_fiqa.search_service import SearchService
+from ri_fiqa.config import SELECTED_CONFIG
+from ri_fiqa.preprocessing import PreprocessConfig, TextPreprocessor
 
 
 class FakeSemanticRetriever:
@@ -41,7 +43,7 @@ class TestSearchService(unittest.TestCase):
             "d3": "bank loans",
         }
 
-        index = InvertedIndex()
+        index = InvertedIndex(TextPreprocessor(PreprocessConfig(morphology=SELECTED_CONFIG.morphology)))
 
         index.build([
             {"_id": doc_id, "text": text}
@@ -91,6 +93,8 @@ class TestSearchService(unittest.TestCase):
 
         self.assertEqual(len(hits), 2)
 
+        self.assertEqual(len(self.semantic.calls), 1)
+
         # La fusión siempre solicita 1000 candidatos.
         self.assertEqual(
             self.semantic.calls[-1],
@@ -100,8 +104,16 @@ class TestSearchService(unittest.TestCase):
     def test_selected_bm25_configuration(self):
         bm25 = self.service._get_lexical("bm25")
 
-        self.assertEqual(bm25.config.k1, 1.2)
-        self.assertEqual(bm25.config.b, 0.5)
+        self.assertEqual(bm25.config.k1, SELECTED_CONFIG.bm25_k1)
+        self.assertEqual(bm25.config.b, SELECTED_CONFIG.bm25_b)
+
+    def test_bge_and_hybrid_receive_original_query(self):
+        query = "BANKS investments 401(k)"
+        for model in ("bge", "hybrid"):
+            self.semantic.calls.clear()
+            self.service.search(query, model=model, top_k=2)
+            self.assertEqual(len(self.semantic.calls), 1)
+            self.assertEqual(self.semantic.calls[0][0], query)
 
     def test_model_caching(self):
         first = self.service._get_lexical("tfidf")

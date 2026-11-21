@@ -1,0 +1,16 @@
+{
+  "completed_at_utc": "2026-11-21T02:53:01.408561+00:00",
+  "selection_sha256": "45f671424efe423bedb96bf2687fe4f04e25c99c9d837dc8626533f07685ffb5",
+  "winner": "stemming",
+  "queries_evaluated": 648,
+  "data_fingerprints": {
+    "queries": "eff05aad8f9f7bb2",
+    "qrels": "49d391641f613949"
+  },
+  "semantic_cache_sha256": {
+    "results/service_bge_test_top1000.trec": "fea15d8c1ab2d6c488498cddde0386cf7f8f1bba316b8e02763bbe99c5cc0873",
+    "results/service_bge_test_metrics.json": "85ee82dcdc88848c7e46bef89fc66b38941eebc291d1007b1bf01dd3a9f95d3f"
+  },
+  "bge_unchanged": true,
+  "retuned": false
+}

@@ -1,0 +1,286 @@
+{
+  "provider": "ir-measures",
+  "tolerance": 1e-09,
+  "runs": [
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-0.8_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-0.8_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-0.8_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-1.2_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-1.2_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-1.2_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-1.6_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-1.6_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_bm25_k1-1.6_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_hybrid_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_jaccard_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/baseline_tfidf_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-0.8_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-0.8_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-0.8_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-1.2_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-1.2_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-1.2_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-1.6_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-1.6_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_bm25_k1-1.6_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_hybrid_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_jaccard_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/lemmatization_tfidf_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-0.8_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-0.8_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-0.8_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-1.2_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-1.2_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-1.2_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-1.6_b-0.5_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-1.6_b-0.75_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_bm25_k1-1.6_b-0.9_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_hybrid_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_jaccard_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/stemming_tfidf_validation.trec",
+      "split": "validation",
+      "queries": 500,
+      "metric_values_checked": 2000,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/final_test/stemming_bm25_test.trec",
+      "split": "test",
+      "queries": 648,
+      "metric_values_checked": 2592,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/final_test/stemming_hybrid_test.trec",
+      "split": "test",
+      "queries": 648,
+      "metric_values_checked": 2592,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/final_test/stemming_jaccard_test.trec",
+      "split": "test",
+      "queries": 648,
+      "metric_values_checked": 2592,
+      "max_absolute_difference": 0.0
+    },
+    {
+      "run": "results/preprocessing_v1/final_test/stemming_tfidf_test.trec",
+      "split": "test",
+      "queries": 648,
+      "metric_values_checked": 2592,
+      "max_absolute_difference": 0.0
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Preservar los bytes de los artefactos congelados y sus hashes SHA-256.
+results/preprocessing_v1/** -text whitespace=cr-at-eol

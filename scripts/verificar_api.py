@@ -5,6 +5,7 @@ import argparse
 import sys
 
 import httpx
+from ri_fiqa.config import SELECTED_CONFIG
 
 
 MODELS = (
@@ -47,6 +48,7 @@ def main():
             response.raise_for_status()
 
             assert response.json()["status"] == "ready"
+            assert response.json()["lexical_preprocessing"] == SELECTED_CONFIG.morphology
             print("[OK] /ready")
 
             # 3. Comprobar los modelos.
@@ -59,6 +61,11 @@ def main():
             }
 
             assert available == set(MODELS)
+            assert response.json()["lexical_configuration"] == {
+                "morphology": SELECTED_CONFIG.morphology,
+                "bm25_k1": SELECTED_CONFIG.bm25_k1,
+                "bm25_b": SELECTED_CONFIG.bm25_b,
+            }
             print("[OK] /models")
 
             # 4. Ejecutar búsquedas reales.

@@ -4,6 +4,8 @@
 import re
 import unicodedata
 from dataclasses import dataclass
+from functools import lru_cache
+from typing import Literal
 
 from sklearn.feature_extraction.text import ENGLISH_STOP_WORDS
 
@@ -31,6 +33,11 @@ class PreprocessConfig:
     """Configuración de un experimento de procesamiento."""
 
     remove_stopwords: bool = True
+    morphology: Literal["baseline", "stemming", "lemmatization"] = "baseline"
+
+    def __post_init__(self):
+        if self.morphology not in ("baseline", "stemming", "lemmatization"):
+            raise ValueError("Morfología desconocida.")
 
 
 class TextPreprocessor:
@@ -41,6 +48,27 @@ class TextPreprocessor:
         config: PreprocessConfig | None = None
     ):
         self.config = config or PreprocessConfig()
+        self._transform = None
+        if self.config.morphology == "stemming":
+            from nltk.stem.snowball import SnowballStemmer
+
+            self._transform = lru_cache(maxsize=100_000)(
+                SnowballStemmer("english").stem
+            )
+        elif self.config.morphology == "lemmatization":
+            from nltk.corpus import wordnet
+            from nltk.stem import WordNetLemmatizer
+
+            try:
+                wordnet.ensure_loaded()
+            except LookupError as exc:
+                raise RuntimeError(
+                    "Falta WordNet. Ejecuta: python -m nltk.downloader wordnet"
+                ) from exc
+            # POS nominal fijo: determinista y sin un segundo modelo/tagger.
+            self._transform = lru_cache(maxsize=100_000)(
+                WordNetLemmatizer().lemmatize
+            )
 
     @staticmethod
     def normalize(text: str | None) -> str:
@@ -84,6 +112,14 @@ class TextPreprocessor:
             tokens = [
                 token for token in tokens
                 if token not in STOPWORDS
+            ]
+
+        if self._transform is not None:
+            tokens = [
+                self._transform(token)
+                if token.isalpha() and token not in PROTECTED_TERMS
+                else token
+                for token in tokens
             ]
 
         return tokens

@@ -193,12 +193,12 @@ def main():
     metrics_path = RESULTS / f"{name}_metrics.json"
     run_path = RESULTS / f"{name}_top{DEPTH}.trec"
 
-    if args.split == "test":
-        if metrics_path.exists() or run_path.exists():
-            parser.error(
-                "Ya existen resultados de test para "
-                "este modelo. No se sobrescribirán."
-            )
+    if metrics_path.exists() or run_path.exists():
+        parser.error(
+            "Ya existen resultados históricos para este modelo y partición. "
+            "No se sobrescribirán. Usa experimentar_preprocesamiento.py "
+            "para las corridas independientes."
+        )
 
     print("[1/4] Preparando consultas y relevancias...")
 

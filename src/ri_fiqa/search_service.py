@@ -8,7 +8,8 @@ from pathlib import Path
 
 from datasets import load_from_disk
 
-from ri_fiqa.config import SELECTED_CONFIG
+from ri_fiqa.config import SELECTED_CONFIG, RetrievalConfig
+from ri_fiqa.preprocessing import PreprocessConfig
 from ri_fiqa.indexing import InvertedIndex
 from ri_fiqa.retrieval.common import SearchResult
 from ri_fiqa.retrieval.jaccard import JaccardRetriever
@@ -44,6 +45,7 @@ class SearchService:
         semantic_retriever=None,
         document_texts=None,
         device: str = "auto",
+        config: RetrievalConfig = SELECTED_CONFIG,
     ):
         if device not in ("auto", "cpu", "cuda"):
             raise ValueError("Dispositivo no válido.")
@@ -54,7 +56,7 @@ class SearchService:
             else Path(__file__).resolve().parents[2]
         )
 
-        self.config = SELECTED_CONFIG
+        self.config = config
         self.device = device
 
         # Cachés: se cargan cuando son necesarias.
@@ -69,7 +71,7 @@ class SearchService:
         if self._inverted_index is None:
             path = (
                 self.root / "data" / "processed"
-                / "inverted_index_stopwords.json.gz"
+                / self.config.lexical_index
             )
 
             if not path.is_file():
@@ -79,6 +81,10 @@ class SearchService:
 
             self._inverted_index = InvertedIndex.load(path)
 
+        if self._inverted_index.preprocessor.config != PreprocessConfig(
+            morphology=self.config.morphology
+        ):
+            raise RuntimeError("El preprocesamiento del índice no coincide con el servicio.")
         return self._inverted_index
 
     def _get_lexical(self, model: str):
@@ -258,17 +264,6 @@ class SearchService:
             )
 
         else:
-            # Misma profundidad que en los experimentos.
-            depth = self.config.candidate_depth
-
-            bm25_results = self._get_lexical(
-                "bm25"
-            ).search(query, top_k=depth)
-
-            semantic_results = self._get_semantic().search(
-                query, top_k=depth
-            )
-
             results = self.rank_many(
                 [query],
                 model=model,
@@ -396,4 +391,3 @@ class SearchService:
             combined.append(fused)
     
         return combined
-    

@@ -30,6 +30,7 @@ data/processed/
 
 # Rankings pesados; conservar métricas JSON/CSV/Markdown
 results/*.trec
+results/**/*.trec
 
 # Configuración personal del editor
 .vscode/

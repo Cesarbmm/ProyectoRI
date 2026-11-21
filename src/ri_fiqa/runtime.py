@@ -4,13 +4,14 @@
 import json
 from pathlib import Path
 
-from ri_fiqa.config import SELECTED_CONFIG
+from ri_fiqa.config import SELECTED_CONFIG, RetrievalConfig
 from ri_fiqa.embedding_models import MODEL_SPECS
 
 
 def inspect_assets(
     project_root: Path,
     semantic_index: str = SELECTED_CONFIG.semantic_index,
+    config: RetrievalConfig = SELECTED_CONFIG,
 ) -> dict:
     """Comprueba recursos sin cargar PyTorch, datasets ni FAISS."""
 
@@ -24,7 +25,7 @@ def inspect_assets(
         "corpus": root / "data" / "raw" / "corpus",
         "inverted_index": (
             root / "data" / "processed"
-            / "inverted_index_stopwords.json.gz"
+            / config.lexical_index
         ),
         "faiss_index": semantic_dir / "index.faiss",
         "document_ids": semantic_dir / "doc_ids.json",
@@ -82,5 +83,6 @@ def inspect_assets(
     return {
         "status": "ready" if is_ready else "not_ready",
         "semantic_index": semantic_index,
+        "lexical_preprocessing": config.morphology,
         "components": components,
     }

@@ -7,6 +7,7 @@ from pathlib import Path
 
 from ri_fiqa.embedding_models import MODEL_SPECS
 from ri_fiqa.runtime import inspect_assets
+from ri_fiqa.config import SELECTED_CONFIG, RetrievalConfig
 
 
 class TestRuntime(unittest.TestCase):
@@ -22,7 +23,7 @@ class TestRuntime(unittest.TestCase):
         corpus.mkdir(parents=True)
         semantic.mkdir(parents=True)
 
-        (processed / "inverted_index_stopwords.json.gz"
+        (processed / SELECTED_CONFIG.lexical_index
          ).write_bytes(b"test")
 
         (semantic / "index.faiss").write_bytes(b"test")
@@ -96,6 +97,16 @@ class TestRuntime(unittest.TestCase):
         self.assertFalse(
             status["components"]["metadata_consistent"]
         )
+
+
+    def test_readiness_uses_requested_morphology_index(self):
+        alternate = "stemming" if SELECTED_CONFIG.morphology != "stemming" else "lemmatization"
+        config = RetrievalConfig(morphology=alternate)
+        status = inspect_assets(self.root, config=config)
+        self.assertFalse(status["components"]["inverted_index"])
+        self.assertEqual(status["lexical_preprocessing"], alternate)
+        (self.root / "data/processed" / config.lexical_index).write_bytes(b"test")
+        self.assertEqual(inspect_assets(self.root, config=config)["status"], "ready")
 
 
 if __name__ == "__main__":

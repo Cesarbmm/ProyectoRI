@@ -5,6 +5,10 @@ numpy
 sentence-transformers
 faiss-cpu
 python-dotenv
+nltk==3.9.2
+fastapi
+uvicorn
+httpx
 # PyTorch se instala por separado con CUDA en Windows.
 # Ver instrucciones de instalación en README.md.
 

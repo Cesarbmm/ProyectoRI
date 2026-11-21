@@ -19,6 +19,7 @@ from pydantic import (
 )
 
 from ri_fiqa.search_service import SearchService
+from ri_fiqa.config import SELECTED_CONFIG
 
 from pathlib import Path
 
@@ -118,9 +119,16 @@ class ModelInfo(BaseModel):
     score_type: str
 
 
+class LexicalConfiguration(BaseModel):
+    morphology: Literal["baseline", "stemming", "lemmatization"]
+    bm25_k1: float
+    bm25_b: float
+
+
 class ModelsResponse(BaseModel):
     default_model: ModelName
     models: list[ModelInfo]
+    lexical_configuration: LexicalConfiguration
 
 
 MODEL_INFO = [
@@ -306,6 +314,11 @@ def models():
     return ModelsResponse(
         default_model="bge",
         models=MODEL_INFO,
+        lexical_configuration={
+            "morphology": SELECTED_CONFIG.morphology,
+            "bm25_k1": SELECTED_CONFIG.bm25_k1,
+            "bm25_b": SELECTED_CONFIG.bm25_b,
+        },
     )
 
 

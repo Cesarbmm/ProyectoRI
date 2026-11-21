@@ -8,6 +8,7 @@ from time import perf_counter
 from datasets import load_from_disk
 
 from ri_fiqa.indexing import InvertedIndex
+from ri_fiqa.config import SELECTED_CONFIG, RetrievalConfig
 from ri_fiqa.preprocessing import (
     PreprocessConfig,
     TextPreprocessor,
@@ -18,19 +19,13 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 
 CORPUS_PATH = BASE_DIR / "data" / "raw" / "corpus"
 
-INDEX_PATH = (
-    BASE_DIR / "data" / "processed"
-    / "inverted_index_stopwords.json.gz"
-)
-
-
-def construir_indice():
+def construir_indice(morphology=SELECTED_CONFIG.morphology, output_path=None):
     print("[1/3] Cargando corpus FiQA...")
 
     corpus = load_from_disk(str(CORPUS_PATH))
 
     preprocessor = TextPreprocessor(
-        PreprocessConfig(remove_stopwords=True)
+        PreprocessConfig(remove_stopwords=True, morphology=morphology)
     )
 
     index = InvertedIndex(preprocessor)
@@ -54,10 +49,13 @@ def construir_indice():
     tiempo = perf_counter() - inicio
 
     print("[3/3] Guardando índice comprimido...")
-    index.save(INDEX_PATH)
+    output_path = output_path or (
+        BASE_DIR / "data/processed" / RetrievalConfig(morphology=morphology).lexical_index
+    )
+    index.save(output_path)
 
     print(f"\nTiempo de construcción: {tiempo:.2f} s")
-    print(f"Archivo: {INDEX_PATH}")
+    print(f"Archivo: {output_path}")
 
     return index
 
@@ -126,13 +124,23 @@ def main():
         help="Término que se desea inspeccionar."
     )
 
+    parser.add_argument(
+        "--morphology", choices=("baseline", "stemming", "lemmatization"),
+        default=SELECTED_CONFIG.morphology,
+        help="Morfología del índice; por defecto la configuración final."
+    )
     args = parser.parse_args()
+    index_path = (
+        BASE_DIR / "data/processed" / RetrievalConfig(morphology=args.morphology).lexical_index
+    )
 
-    if INDEX_PATH.exists() and not args.rebuild:
+    if index_path.exists() and not args.rebuild:
         print("[LOCAL] Cargando índice existente...")
-        index = InvertedIndex.load(INDEX_PATH)
+        index = InvertedIndex.load(index_path)
+        if index.preprocessor.config != PreprocessConfig(morphology=args.morphology):
+            parser.error("El índice no coincide con la morfología solicitada; usa --rebuild.")
     else:
-        index = construir_indice()
+        index = construir_indice(args.morphology, index_path)
 
     mostrar_estadisticas(index)
     inspeccionar_termino(index, args.term)

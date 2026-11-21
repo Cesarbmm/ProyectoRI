@@ -10,13 +10,13 @@ Proyecto académico de **Recuperación de Información (RI)** sobre el corpus fi
 |---|---|---|
 | `jaccard` | Similitud binaria de Jaccard | Índice invertido propio |
 | `tfidf` | TF-IDF con similitud de coseno | Índice invertido propio |
-| `bm25` | BM25 (`k1=1.2`, `b=0.5`) | Índice invertido propio |
+| `bm25` | BM25 (`k1=0.8`, `b=0.75`, Snowball) | Índice invertido propio |
 | `bge` | Embeddings BGE-base-en-v1.5 + FAISS | Índice vectorial exacto |
 | `hybrid` | RRF ponderado de BM25 y BGE | `k=10`, peso BGE `0.9` |
 
 Los modelos léxicos no dependen de Whoosh, Elasticsearch ni Solr. El híbrido es una extensión experimental, no reemplaza los cuatro modelos obligatorios.
 
-### Resultados de referencia
+### Resultados de referencia históricos (baseline léxico)
 
 Evaluación en **FiQA test**: 648 consultas, profundidad 1.000. La selección de parámetros se realizó previamente sobre `validation`, sin reajustes usando `test`.
 
@@ -30,11 +30,43 @@ Evaluación en **FiQA test**: 648 consultas, profundidad 1.000. La selección de
 
 Las métricas se contrastaron con `ir-measures`. La ventaja del híbrido sobre BGE individual es pequeña; el análisis exploratorio en `validation` no encontró significación estadística para esa diferencia.
 
+### Configuración final de preprocesamiento
+
+Se compararon baseline, Snowball y WordNet nominal con las mismas **500 consultas
+de validation**, reconstruyendo sus índices y optimizando BM25 con la misma
+rejilla para cada variante. El criterio principal fue MAP@1000 medio entre
+Jaccard, TF-IDF, BM25 e híbrido:
+
+| Configuración | MAP@1000 global | Cambio vs baseline | p Holm pareada |
+|---|---:|---:|---:|
+| Baseline | 0.184091 | — | — |
+| **Snowball (seleccionada)** | **0.197320** | **+7.19%** | **0.000200** |
+| WordNet nominal | 0.190588 | +3.53% | 0.009999 |
+
+La configuración final común a los modelos léxicos es **Snowball**, con BM25
+`k1=0.8`, `b=0.75`. BGE y FAISS se conservan intactos, y RRF mantiene `k=10`,
+peso BGE `0.9`. Snowball mejora especialmente TF-IDF y BM25; el híbrido pierde
+un **0.21% relativo de MAP en validation**, diferencia no significativa.
+La selección admite pérdidas individuales de hasta un 2% relativo por métrica,
+según el límite fijado antes de evaluar. La inferencia es exploratoria porque
+la optimización y los contrastes comparten validation.
+
+Después de congelar la selección se evaluó únicamente Snowball en las **648
+consultas de test**, sin reajustes: MAP@1000 de Jaccard `0.038587`, TF-IDF
+`0.141153`, BM25 `0.210294` e híbrido `0.349604`.
+
+Consulta la [tabla completa, análisis estadístico y comandos de reproducción](docs/EXPERIMENTOS_PREPROCESAMIENTO.md),
+la [selección congelada](results/preprocessing_v1/selection_frozen.json) y las
+[métricas nuevas](results/preprocessing_v1/). Los resultados históricos de la
+tabla anterior no se han modificado. El baseline sigue disponible con
+`PreprocessConfig(morphology="baseline")`.
+
 ## Arquitectura
 
 ```text
 src/ri_fiqa/
   preprocessing.py          # Normalización y tokenización
+  preprocessing_experiment.py # Protocolo y selección pareada de morfología
   indexing.py               # Índice invertido propio
   retrieval/                # Jaccard, TF-IDF, BM25, BGE/FAISS y RRF
   embedding_models.py       # Perfiles MiniLM/BGE/E5
@@ -106,6 +138,7 @@ data/raw/corpus/
 data/raw/queries/
 data/raw/qrels/
 data/processed/inverted_index_stopwords.json.gz
+data/processed/inverted_index_stemming.json.gz
 data/processed/semantic_bge/index.faiss
 data/processed/semantic_bge/doc_ids.json
 data/processed/semantic_bge/metadata.json
@@ -203,7 +236,7 @@ python -m pip check
 python -m unittest discover -s tests -v
 ```
 
-La última ejecución verificada tuvo **82 pruebas correctas**. Con la API iniciada y los recursos disponibles:
+La última ejecución verificada tuvo **104 pruebas correctas**. Con la API iniciada y los recursos disponibles:
 
 ```powershell
 python scripts/verificar_api.py

@@ -27,6 +27,12 @@ Identificadores admitidos:
 
 Modelo predeterminado: bge.
 
+La respuesta incluye además `lexical_configuration` con `morphology`,
+`bm25_k1` y `bm25_b`, seleccionados exclusivamente en `validation`.
+La configuración es común a Jaccard, TF-IDF, BM25 y la rama léxica del híbrido.
+`GET /ready` informa `lexical_preprocessing` y verifica la ruta del índice elegido.
+No se envía una opción de preprocesamiento en cada búsqueda.
+
 ### POST /search
 Content-Type: application/json
 

@@ -5,6 +5,10 @@ from fastapi.testclient import TestClient
 
 from ri_fiqa.api import app, get_search_service, get_readiness
 from ri_fiqa.search_service import SearchHit
+from ri_fiqa.config import SELECTED_CONFIG, RetrievalConfig
+from ri_fiqa.indexing import InvertedIndex
+from ri_fiqa.preprocessing import PreprocessConfig, TextPreprocessor
+from ri_fiqa.search_service import SearchService
 
 
 class FakeSearchService:
@@ -63,6 +67,8 @@ class TestAPI(unittest.TestCase):
         data = response.json()
 
         self.assertEqual(data["default_model"], "bge")
+        self.assertEqual(data["lexical_configuration"]["morphology"], SELECTED_CONFIG.morphology)
+        self.assertEqual(data["lexical_configuration"]["bm25_b"], SELECTED_CONFIG.bm25_b)
 
         self.assertEqual(
             {model["id"] for model in data["models"]},
@@ -191,6 +197,20 @@ class TestAPI(unittest.TestCase):
         self.assertEqual(response.status_code, 503)
 
     
+    def test_api_applies_morphology_to_documents_and_queries(self):
+        index = InvertedIndex(TextPreprocessor(PreprocessConfig(morphology="stemming")))
+        index.add_document("d", "bank investments")
+        service = SearchService(
+            config=RetrievalConfig(morphology="stemming"), inverted_index=index,
+            document_texts={"d": "bank investments"},
+        )
+        app.dependency_overrides[get_search_service] = lambda: service
+        for model in ("jaccard", "tfidf", "bm25"):
+            response = self.client.post("/search", json={"query": "banks", "model": model})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json()["results"][0]["doc_id"], "d")
+
+
     def test_ready_success(self):
         app.dependency_overrides[get_readiness] = lambda: {
             "status": "ready",
