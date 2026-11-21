@@ -1,0 +1,92 @@
+{
+  "base_url": "https://fiqa-669vd5r2g-fonfini123-1060.vercel.app",
+  "transport": "vercel curl",
+  "passed": true,
+  "rankings": [
+    {
+      "model": "jaccard",
+      "elapsed_ms": 2652.09,
+      "document_ids": [
+        "480881",
+        "512153",
+        "268485"
+      ]
+    },
+    {
+      "model": "tfidf",
+      "elapsed_ms": 1475.21,
+      "document_ids": [
+        "263225",
+        "454072",
+        "395376"
+      ]
+    },
+    {
+      "model": "bm25",
+      "elapsed_ms": 33.18,
+      "document_ids": [
+        "263225",
+        "281491",
+        "116930"
+      ]
+    },
+    {
+      "model": "bge",
+      "elapsed_ms": 4260.47,
+      "document_ids": [
+        "263225",
+        "281491",
+        "26820"
+      ]
+    },
+    {
+      "model": "hybrid",
+      "elapsed_ms": 111.59,
+      "document_ids": [
+        "263225",
+        "281491",
+        "26820"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "path": "/health",
+      "elapsed_ms": 6972.15
+    },
+    {
+      "path": "/ready",
+      "elapsed_ms": 2618.47
+    },
+    {
+      "path": "/models",
+      "elapsed_ms": 1919.43
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 4575.65
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 3084.81
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 1708.52
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 5978.42
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 1743.79
+    },
+    {
+      "path": "/search/compare",
+      "elapsed_ms": 2049.45
+    }
+  ],
+  "comparison_models": 5,
+  "runtime": null
+}

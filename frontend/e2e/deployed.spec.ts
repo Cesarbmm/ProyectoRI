@@ -14,6 +14,18 @@ test("public site searches all five complete systems, automatic, metrics and com
 }) => {
   const api = process.env.FIQA_API_URL!.replace(/\/+$/, "");
   const origin = new URL(baseURL!).origin;
+  // Authenticate only this project's Preview, never API or third-party requests.
+  // The short-lived token is injected by `vercel env run`, not bundled in Vite.
+  if (process.env.VERCEL_OIDC_TOKEN) {
+    await page.route(`${origin}/**`, (route) =>
+      route.continue({
+        headers: {
+          ...route.request().headers(),
+          "x-vercel-trusted-oidc-idp-token": process.env.VERCEL_OIDC_TOKEN!,
+        },
+      }),
+    );
+  }
   const health = await request.get(`${api}/health`, {
     headers: { Origin: origin },
   });

@@ -1,0 +1,92 @@
+{
+  "base_url": "https://fiqa-api.vercel.app",
+  "transport": "HTTP",
+  "passed": true,
+  "rankings": [
+    {
+      "model": "jaccard",
+      "elapsed_ms": 2220.87,
+      "document_ids": [
+        "480881",
+        "512153",
+        "268485"
+      ]
+    },
+    {
+      "model": "tfidf",
+      "elapsed_ms": 2063.08,
+      "document_ids": [
+        "263225",
+        "454072",
+        "395376"
+      ]
+    },
+    {
+      "model": "bm25",
+      "elapsed_ms": 31.72,
+      "document_ids": [
+        "263225",
+        "281491",
+        "116930"
+      ]
+    },
+    {
+      "model": "bge",
+      "elapsed_ms": 4442.1,
+      "document_ids": [
+        "263225",
+        "281491",
+        "26820"
+      ]
+    },
+    {
+      "model": "hybrid",
+      "elapsed_ms": 110.79,
+      "document_ids": [
+        "263225",
+        "281491",
+        "26820"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "path": "/health",
+      "elapsed_ms": 368.86
+    },
+    {
+      "path": "/ready",
+      "elapsed_ms": 333.78
+    },
+    {
+      "path": "/models",
+      "elapsed_ms": 324.37
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 2543.36
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 2405.53
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 353.13
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 4784.37
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 450.88
+    },
+    {
+      "path": "/search/compare",
+      "elapsed_ms": 578.1
+    }
+  ],
+  "comparison_models": 5,
+  "runtime": null
+}
