@@ -1,0 +1,18 @@
+{
+  "origin": "https://fiqa-indol.vercel.app",
+  "api": "https://fiqa-api.vercel.app",
+  "checks": [
+    {
+      "path": "/health",
+      "method": "GET",
+      "status": 200,
+      "allowed_origin": "https://fiqa-indol.vercel.app"
+    },
+    {
+      "path": "/search/compare",
+      "method": "OPTIONS",
+      "status": 200,
+      "allowed_origin": "https://fiqa-indol.vercel.app"
+    }
+  ]
+}

@@ -19,6 +19,7 @@ export default defineConfig({
   use: {
     baseURL: site,
     viewport: { width: 1440, height: 1000 },
+    storageState: process.env.FIQA_BROWSER_STORAGE_STATE || undefined,
     screenshot: "off",
     trace: "off",
   },

@@ -41,8 +41,9 @@ docs/capturas/           # Capturas reales de las pantallas principales
 ```
 
 También se actualizan `.gitignore` (dependencias y salidas temporales) y el README
-principal. **No se cambia ningún archivo de `src/ri_fiqa`, `tests/`, `scripts/`
-del backend ni `results/`**, ni los hiperparámetros, el encoder o FAISS.
+principal. El código de recuperación de `src/ri_fiqa`, `results/`, los
+hiperparámetros, el encoder y FAISS permanecen intactos. El adaptador de
+despliegue y sus pruebas se describen en [DESPLIEGUE.md](DESPLIEGUE.md).
 
 ## Instalación y desarrollo
 
@@ -196,8 +197,8 @@ npm run format:check
 
 | Comprobación | Resultado |
 |---|---|
-| Backend | **104 pruebas correctas**, incluidas las 82 originales |
-| Frontend, Vitest/Testing Library | **29 pruebas correctas** |
+| Backend | **108 pruebas correctas**, incluidas las 82 originales |
+| Frontend, Vitest/Testing Library | **39 pruebas correctas** |
 | Playwright, validación completa previa | **25 pruebas correctas**: 8 desktop, 8 tablet, 8 móvil y 1 recorrido completo de API real |
 | Playwright, revisión rápida en inglés | **16 pruebas correctas**: 8 desktop y 8 móvil, con búsquedas reales y sin nuevas capturas |
 | Compilación TypeScript y Vite | Correcta; artefacto estático en `frontend/dist/` |
@@ -309,5 +310,8 @@ reales. `127.0.0.1` apunta al equipo donde se abre el navegador y no sirve como
 dirección de un backend remoto. Publicar solo este frontend no publica los
 modelos, los datos ni FastAPI.
 
-No se han creado archivos de despliegue específicos de Vercel ni se ha publicado
-esta fase. La configuración y resultados académicos están conservados.
+La aplicación ya está publicada en [fiqa-indol.vercel.app](https://fiqa-indol.vercel.app)
+con API completa en Vercel. El E2E pasó en Preview, Production preparado y el
+dominio público sin credenciales. Véase [DESPLIEGUE.md](DESPLIEGUE.md) para la
+arquitectura, recursos, costos y reproducción. La configuración y resultados
+académicos están conservados.

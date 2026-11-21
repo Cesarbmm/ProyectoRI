@@ -3,6 +3,9 @@
 This adapter deploys the existing `ri_fiqa.api:app` on Python 3.12 with PyTorch
 CPU. Retrieval code, embeddings, academic metrics and the frontend are unchanged.
 
+Public API: https://fiqa-api.vercel.app/docs.
+Public frontend: https://fiqa-indol.vercel.app.
+
 The isolated `fiqa-api` project uses Root Directory `backend`, the FastAPI preset,
 Fluid Compute and Large Functions beta. The frontend remains in `fiqa`, rooted at
 `frontend`. Enable source files outside the root directory: the build copies the
@@ -49,6 +52,8 @@ The configured preview pattern is
 `^https://fiqa-(?:[a-z0-9-]+-)?fonfini123-1060\.vercel\.app$`.
 It does not allow arbitrary Vercel sites. Credentials are not used by browser
 requests. The adapter preserves existing API validation and scores.
+Production also allows `https://fiqa-indol.vercel.app` explicitly through
+`RI_CORS_ORIGINS`, alongside the original local development origins.
 
 `/ready` additionally verifies all asset hashes once per instance. Preview-only
 `POST /runtime/measure` executes all five real systems in the same process and

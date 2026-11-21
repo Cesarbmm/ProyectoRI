@@ -1,0 +1,28 @@
+{
+    "api_error_records":  0,
+    "frontend_server_error_records":  0,
+    "scan_window":  "15 minutes",
+    "production_memory_samples":  [
+                                      {
+                                          "path":  "/models",
+                                          "status":  200,
+                                          "elapsed_ms":  10.0,
+                                          "rss_bytes":  225005568,
+                                          "peak_rss_bytes":  225005568
+                                      },
+                                      {
+                                          "path":  "/health",
+                                          "status":  200,
+                                          "elapsed_ms":  1.31,
+                                          "rss_bytes":  225497088,
+                                          "peak_rss_bytes":  225497088
+                                      },
+                                      {
+                                          "path":  "/ready",
+                                          "status":  200,
+                                          "elapsed_ms":  1.59,
+                                          "rss_bytes":  1262919680,
+                                          "peak_rss_bytes":  1262919680
+                                      }
+                                  ]
+}

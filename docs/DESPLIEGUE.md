@@ -1,160 +1,152 @@
-# Despliegue FiQA
+# ProyectoRI en Vercel
 
-## Arquitectura
+## URLs públicas verificadas
 
-Frontend React/Vite estático en Vercel; FastAPI, BGE y FAISS en un proceso
-persistente de un proveedor de contenedores o VPS. La URL del backend es pública,
-HTTPS y se fija en `VITE_API_URL` para Preview y Production. No contiene secretos.
+- **Buscador:** https://fiqa-indol.vercel.app
+- **API:** https://fiqa-api.vercel.app
+- **Swagger:** https://fiqa-api.vercel.app/docs
+- **Recursos completos:** https://fiqa-api.vercel.app/ready
 
-La selección sigue siendo Snowball, BM25 `k1=0.8`, `b=0.75`, RRF `k=10` y peso BGE
-`0.9`. No se reconstruyen embeddings, se recortan documentos ni se desactivan modelos.
+La aplicación ya no depende del backend incompleto de Render. No se modificó
+ningún servicio de Render. Se conservaron el diseño del frontend, los algoritmos,
+los embeddings y los resultados académicos.
 
-## Proyecto Vercel preparado
+| Proyecto | Root Directory | Ejecución |
+|---|---|---|
+| `fiqa` | `frontend` | React/Vite estático; Node 24 durante el build |
+| `fiqa-api` | `backend` | FastAPI, Python 3.12, PyTorch CPU, Fluid Compute/Large Functions |
 
-- Proyecto: `fiqa`, cuenta/equipo `fonfini123-1060`.
-- Root Directory: `frontend`.
-- Framework: Vite. Node: `24.x`.
-- Install: `npm ci`. Build: `npm run build`. Output: `dist`.
-- **Include source files outside of Root Directory**: activado. La comprobación
-  del benchmark necesita `../results/`, no solo el JSON empaquetado del frontend.
-- Archivo versionado: `frontend/vercel.json`.
-- `VITE_API_URL` en Preview y Production: `https://fiqa-backend.onrender.com`.
-- El build en Vercel rechaza una URL ausente, HTTP, local o con credenciales.
-  El desarrollo local sigue usando la API local.
-- `.vercel/` y todos los archivos de entorno locales están excluidos de Git.
+Equipo: `fonfini123-1060`, plan **Hobby**. Ambos proyectos incluyen archivos fuera
+de Root Directory: el frontend verifica `../results/`; el backend empaqueta
+`../src/ri_fiqa`. La configuración sigue siendo Snowball, BM25 `k1=0.8`, `b=0.75`,
+RRF `k=10`, peso BGE `0.9`. Automático resuelve a `hybrid`.
 
-El MCP de Vercel no expuso herramientas en esta sesión aunque el plugin figuraba
-habilitado. Se utilizó la CLI oficial `66.6.0` con acceso autorizado mediante OAuth.
+## Recursos reproducibles
 
-## Capacidad del backend
+`backend/pyproject.toml` y `uv.lock` fijan dependencias de Linux/Python 3.12.
+Torch procede exclusivamente del índice CPU. No se utiliza el lockfile
+Windows/CUDA ni se instalan paquetes de evaluación como `ir-measures`.
 
-Recursos existentes, sin alterar:
+`backend/prepare_runtime.py` descarga el [paquete completo de corpus e índices](https://github.com/Cesarbmm/ProyectoRI/releases/tag/fiqa-runtime-v1),
+verifica el SHA-256 del archivo y de cada componente, y obtiene BGE base en v1.5,
+revisión `a5beb1e3e68b9ab74eb54cfd186867f64f240e1a`, también con hashes por archivo.
+El manifiesto está versionado en `backend/assets-manifest.json`.
 
-| Recurso | Tamaño |
-|---|---:|
-| Corpus Arrow, 57.638 documentos | 45.324.568 bytes |
-| Índice Snowball comprimido | 12.076.326 bytes |
-| FAISS, 57.600 vectores de 768 dimensiones | 176.947.245 bytes |
-| Pesos BGE base en v1.5 | 437.955.512 bytes |
+El build comprueba **57.638 documentos**, **57.600 vectores** y dimensión **768**.
+Los 38 documentos vacíos permanecen en el corpus, sin vector, como en el índice
+original. No se reconstruyen embeddings ni se descarga el modelo por solicitud:
+los recursos quedan incluidos en la Function y Hugging Face funciona offline.
 
-Solo FAISS y los pesos ya superan el límite estándar de 500 MB de una función
-Python. La documentación actual permite **Large Functions de hasta 5 GB en beta**;
-por tanto, el tamaño no prueba una imposibilidad absoluta. El plan Hobby limita
-la memoria a 2 GB y la duración a 300 s. La inicialización repetida y el almacenamiento
-del modelo/corpus requieren validación específica de la plataforma. No se declara
-fiable una migración serverless a partir de una prueba en Windows.
+Archivo de corpus/índices: **197.775.593 bytes**, SHA-256
+`088a9cd50b858475d160bffd131a8714c0aa506c7a7779c6eaa23d7e3cde3d0d`.
+GitHub confirmó el mismo digest. Con los pesos BGE, los recursos verificados suman
+**673.988.333 bytes**. `/ready` verifica su integridad una vez por proceso.
 
-La medición [local-cpu-profile.json](deployment/local-cpu-profile.json) ejecutó
-los cinco modelos con el corpus e índices completos, sin descargar pesos:
-BGE inicial 10,4 s; proceso residente final aproximadamente 1,07 GB. La memoria
-privada comprometida alcanzó 7,79 GB con el PyTorch CUDA instalado en Windows;
-**no equivale al RSS ni a una medida de PyTorch CPU en Linux**. No permite fijar
-por sí sola el tamaño de una instancia Linux.
+## Configuración y CORS
 
-Recomendación: contenedor Linux con PyTorch CPU, un worker Uvicorn y recursos
-persistentes. Render admite este patrón y disco persistente en planes de pago;
-un VPS con Docker también es adecuado. Se debe medir en Linux antes de elegir
-el plan mínimo. No se crean recursos facturables sin concretar proveedor y coste.
+En `fiqa`, Preview y Production tienen variables **separadas**:
+`VITE_API_URL=https://fiqa-api.vercel.app`. Es una URL pública, sin credenciales.
+Instalación: `npm ci`; build: `npm run build`; salida: `dist`. El build rechaza
+una URL ausente, HTTP, local o con credenciales.
 
-Referencias verificadas:
+En `fiqa-api`, `VERCEL_SUPPORT_LARGE_FUNCTIONS=1`. `RI_RUNTIME_DIAGNOSTICS=1`
+solo en Preview y `0` en Production. El build usa
+`uv run --frozen python prepare_runtime.py`.
 
-- [Límites actuales de Vercel Functions](https://vercel.com/docs/functions/limitations).
-- [Archivos y monorepos en Vercel](https://vercel.com/docs/monorepos/monorepo-faq).
-- [Discos persistentes de Render](https://render.com/docs/disks).
-- [Planes de cómputo de Render](https://render.com/docs/compute-plans).
+`RI_CORS_ORIGIN_REGEX` permite exclusivamente el patrón de previews de este
+proyecto/cuenta:
+`^https://fiqa-(?:[a-z0-9-]+-)?fonfini123-1060\.vercel\.app$`.
+Production configura además `RI_CORS_ORIGINS` con
+`https://fiqa-indol.vercel.app`, `http://localhost:5173`,
+`http://127.0.0.1:5173` y `http://localhost:3000`. Se comprobaron GET y preflight
+POST reales. No se permiten dominios Vercel arbitrarios ni se usan credenciales
+de navegador para buscar.
 
-## Backend, HTTPS y CORS
+HTTPS es nativo de Vercel. Deployment Protection permanece activo para previews
+y URLs generadas; los dominios de producción anteriores funcionan anónimamente.
+La automatización usa `vercel curl`, OIDC limitado al origen del frontend o una
+cookie temporal del build preparado. Ninguna credencial se incorpora a Vite,
+Git, capturas ni trazas.
 
-El backend completo debe tener el corpus, el índice Snowball y los tres archivos
-de `semantic_bge/`, además del encoder BGE original y sus prompts. Estos recursos
-están excluidos de Git; clonar el repositorio **no los instala**.
+## Pruebas y medición
 
-El proveedor debe terminar TLS y entregar una URL HTTPS estable. Configurar en el
-backend `RI_CORS_ORIGINS` con los orígenes exactos del frontend de prueba y de
-producción, separados por comas y sin rutas ni barras finales. El middleware
-existente ya permite GET, POST, Content-Type y no usa credenciales de navegador.
-Reiniciar el proceso para aplicar cambios de CORS.
+| Comprobación | Resultado |
+|---|---|
+| Backend unitario | **108 correctas**, incluidas las 82 originales |
+| Frontend unitario | **39 correctas** |
+| Linux/CPU | Cinco modelos, comparación y recursos completos correctos |
+| API Vercel Preview | Salud, integridad, catálogo, cinco búsquedas, comparación y memoria correctos |
+| API pública | Cinco búsquedas y comparación correctas, sin autenticación |
+| Frontend Preview | `npm run test:deployed` correcto |
+| Production preparado | Mismo E2E correcto antes de promover |
+| Frontend público | Mismo E2E correcto **sin OIDC, cookies ni storageState** |
+| Comparación pública Top-20 | Cinco rankings de 20 documentos; respuesta de 106.689 bytes |
+| TypeScript/Vite y benchmark | Build correcto y métricas coincidentes con las fuentes |
 
-No permitir todos los dominios `*.vercel.app`: cada despliegue de prueba tiene
-su origen propio y debe autorizarse expresamente. `/ready` comprueba estructura;
-la prueba de abajo también ejecuta todos los modelos para comprobar la carga real.
+El E2E verifica Automático → híbrido, los cinco modelos, rankings/textos/scores
+devueltos por HTTP, comparación, CORS y la tabla real de métricas. BGE conserva
+el primer documento `263225` para APR/APY. Sin respuestas simuladas ni capturas nuevas.
 
-## Comprobación antes de publicar
+Vercel reporta una Function de aproximadamente **932 MB**. Ubuntu/WSL midió
+aproximadamente **1,32 GB** de RSS. Vercel Preview midió **1.263.628.288 bytes**
+de RSS/pico observado con todos los modelos y documentos cargados en un proceso.
+`POST /runtime/measure` existe solo en Preview; `/runtime` no se expone en
+Production. Los logs registran memoria y duración, sin contenidos de consultas.
 
-Desde `frontend/`, con URLs reales:
+Evidencias en `docs/deployment/`: `linux-cpu-api.json`,
+`vercel-preview-api.json`, `vercel-staged-api.json`, `vercel-public-api.json`
+y `production-cors.json`, `top20-comparison.json` y `observability.json`.
+La revisión de 15 minutos devolvió cero errores runtime en la API y cero
+respuestas HTTP 5xx en el frontend; se comprobaron muestras reales de logs de memoria.
+
+## Costos y límites
+
+No se activaron recursos de pago, Pro, instancias Performance ni Blob. Las
+pruebas se realizaron con **$0 adicionales dentro de Hobby**: 4 horas de CPU
+activa, 360 GB-hora y un millón de invocaciones mensuales incluidos. Agotar
+cuotas puede pausar el servicio. La Function tiene 2 GB/1 vCPU y 300 segundos.
+Large Functions sigue en **beta**, con límite de 5 GB. Existen arranques en frío;
+no se realizó una prueba de carga masiva. Referencias:
+[Hobby](https://vercel.com/docs/plans/hobby),
+[Functions](https://vercel.com/docs/functions/limitations).
+
+Se mantienen dos proyectos para desplegar y revertir la API grande de forma
+independiente. Services permitiría un dominio compartido, pero añade otra beta
+y acopla despliegues; no es necesario para esta arquitectura verificada.
+
+## Reproducción
+
+En Linux con `uv`, desde `backend/`:
+
+```bash
+uv sync --frozen --no-dev
+uv run --frozen python prepare_runtime.py
+RI_RUNTIME_DIAGNOSTICS=1 uv run --frozen uvicorn main:app --port 8100
+```
+
+Desde la raíz, prueba pública de API:
 
 ```powershell
-$env:FIQA_FRONTEND_URL='https://<preview-verificado>.vercel.app'
-$env:FIQA_API_URL='https://<backend-completo>'
+python backend/verify_api.py https://fiqa-api.vercel.app --no-diagnostics --report build/public-api.json
+```
+
+Desde `frontend/`, navegador público sin credenciales:
+
+```powershell
+npm ci
+$env:FIQA_FRONTEND_URL='https://fiqa-indol.vercel.app'
+$env:FIQA_API_URL='https://fiqa-api.vercel.app'
 npm run test:deployed
+npm test
+npm run build
 ```
 
-Esta prueba no arranca servidores, no simula respuestas y no captura imágenes.
-Comprueba salud, recursos, catálogo/configuración, CORS real, preflight, los cinco
-modelos, Automático, scores y textos devueltos por HTTP, comparación y métricas
-académicas. Conserva la regresión BGE APR/APY: primer documento `263225`.
+Para futuros releases, usar CLI `66.6.0`, proyecto explícito y scope correcto:
+crear Preview, probarlo, preparar Production con `--prod --skip-domain`, probar
+ese build y promoverlo. El primer despliegue de un proyecto nuevo exige target
+Production; se creó sin dominio antes del Preview, sin modificar el frontend.
 
-Para comprobar únicamente la propia prueba contra el entorno local se admite
-`FIQA_ALLOW_LOCAL_SMOKE=1`; ese resultado **no es una validación pública**.
-
-Después de probar Preview, crear un build de Production sin asignar dominios,
-autorizar su origen en CORS y repetir el recorrido:
-
-```powershell
-# Desde la raíz enlazada y con VITE_API_URL configurada en Vercel:
-npx --yes vercel@66.6.0 deploy --prod --skip-domain
-# Ejecutar npm run test:deployed sobre esa URL exacta.
-npx --yes vercel@66.6.0 promote <url-production-validada>
-```
-
-La promoción se realiza únicamente al pasar las comprobaciones. La URL estable
-de producción también debe estar permitida en CORS; repetir el smoke test sobre
-esa URL tras promocionar. No promover Preview como atajo: Vercel puede reconstruir
-con otras variables de Production.
-
-## Estado de esta fase
-
-Frontend compilado en Vercel, todavía **sin promoción ni dominio de producción**:
-
-- Preview: `https://fiqa-86gqyqo3w-fonfini123-1060.vercel.app` (build de 21 s).
-- Build Production sin dominio: `https://fiqa-g9imynjga-fonfini123-1060.vercel.app`
-  (build de 16 s). El primer despliegue de un proyecto no admite Preview; se
-  utilizó `--prod --skip-domain` antes de crear el Preview.
-- El HTML de Preview sirve `FiQA — Financial search`, comprobado con `vercel curl`
-  bajo Deployment Protection. Esta comprobación autenticada no implica acceso
-  público anónimo ni que las búsquedas funcionen.
-- No se ha desactivado Deployment Protection. `vercel curl` creó el bypass de
-  automatización del proyecto, sin exponer su valor ni guardarlo en el repositorio.
-
-El backend indicado responde por HTTPS, pero la comprobación del 21 de noviembre
-de 2026 devolvió `/health` 200, `/models` 200 y `/ready` **503**: corpus, índice
-invertido, FAISS, IDs y metadatos no encontrados. No devolvió CORS para el origen
-de Vercel. Las búsquedas Jaccard, TF-IDF y BM25 devolvieron 503; BGE agotó el timeout
-de 30 s y posteriormente salud devolvió 502. El E2E público **falló** en salud;
-no se declara validación pública correcta ni se promueve producción.
-
-El acceso MCP de Render, en el workspace confirmado por el usuario, solo enumera
-`ExamenRI`. Ese servicio no se modificó. Se necesita acceso al panel/servicio real
-de FiQA para revisar los archivos, capacidad y variables, instalar los recursos
-faltantes y configurar CORS.
-
-Se preparó un paquete completo **local, excluido de Git** para transferirlo al
-backend cuando se disponga de ese acceso:
-
-```powershell
-python scripts/package_runtime_assets.py
-```
-
-Genera `build/deployment/fiqa-runtime.tar.gz` y `runtime-manifest.json`. Comprueba
-57.638 documentos y 57.600 vectores de dimensión 768, registra SHA-256 de cada
-archivo y verifica que los bytes empaquetados coinciden. No recalcula embeddings
-ni índices, ni incluye credenciales. **No incluye el encoder BGE**, que también
-debe instalarse; es un paquete de corpus e índices, no un backend autosuficiente.
-
-La regla `/data` de `.vercelignore` está anclada a la raíz para excluir el corpus
-sin omitir `frontend/src/data/benchmark.json`; el build comprueba sus fuentes.
-
-Pruebas locales: 39 unitarias de frontend, 104 de backend, build y un recorrido
-E2E completo de los cinco sistemas correctos. El empaquetado verificó los hashes
-de los siete archivos originales. Sin nuevas capturas. Publicación final
-pendiente del backend.
+Los despliegues usan la CLI sobre los commits del repositorio. La integración
+Git automática requiere añadir la Login Connection de GitHub a la cuenta Vercel;
+un push por sí solo todavía no publica una versión. Las URLs públicas funcionan
+independientemente de esa integración. Detalle: [backend/README.md](../backend/README.md).

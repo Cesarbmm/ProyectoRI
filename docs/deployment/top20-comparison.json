@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "top_k": 20,
+  "models": [
+    {
+      "model": "jaccard",
+      "count": 20
+    },
+    {
+      "model": "tfidf",
+      "count": 20
+    },
+    {
+      "model": "bm25",
+      "count": 20
+    },
+    {
+      "model": "bge",
+      "count": 20
+    },
+    {
+      "model": "hybrid",
+      "count": 20
+    }
+  ],
+  "response_bytes": 106689,
+  "server_elapsed_ms": 8929.04
+}

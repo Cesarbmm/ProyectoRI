@@ -255,13 +255,19 @@ Las métricas se guardan en `results/` como JSON/CSV; los rankings `.trec` se re
 Configuración de Vercel, capacidad del backend y verificación de despliegues:
 [docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
 
-**Backend probado localmente; despliegue público pendiente.** El frontend puede alojarse de manera independiente. Un servidor remoto de Python deberá disponer de los datos, índices, encoder, memoria suficiente y variables de entorno/CORS. Antes de escoger proveedor, medir memoria, almacenamiento y tiempo de arranque; no asumir que un servicio gratuito de funciones serverless soportará BGE + PyTorch.
+**Aplicación pública:** [FiQA](https://fiqa-indol.vercel.app).
+**API completa:** [fiqa-api.vercel.app/docs](https://fiqa-api.vercel.app/docs).
 
-Para producción no utilizar `--reload`; iniciar un único proceso hasta evaluar la memoria y concurrencia. Añadir HTTPS, controles de uso y monitoreo antes de exponerlo públicamente.
+El frontend estático y FastAPI se alojan en dos proyectos Vercel independientes.
+La API utiliza Python 3.12, PyTorch CPU y Large Functions, con corpus, Snowball,
+FAISS y pesos BGE completos verificados durante el build. Los cinco modelos,
+la comparación y el frontend público pasaron pruebas reales sin autenticación.
+El Preview midió aproximadamente 1,26 GB de RAM, dentro de los 2 GB de Hobby.
+No se activaron recursos de pago; se aplican las cuotas y límites del plan.
 
 ## Colaboración y mantenimiento
 
-- No subir `.env`, `.venv`, `data/raw`, `data/processed`, pesos del encoder ni índices vectoriales.
+- No versionar `.env`, `.venv`, `data/raw`, `data/processed`, pesos ni índices en el historial Git. El despliegue descarga el paquete inmutable de la Release y los pesos BGE por sus hashes.
 - Registrar los cambios de modelos y API en ramas o *pull requests* para no romper el contrato del frontend.
 - Mantener las rutas y campos de `/search` estables; comunicar cualquier cambio al frontend.
 - Los documentos provienen de FiQA: el buscador **recupera textos existentes**, no genera respuestas nuevas ni garantiza corrección financiera.
