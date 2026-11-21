@@ -252,6 +252,10 @@ Escape y Tab. La selección se informa mediante roles de combobox/listbox y no
 depende del estilo de los menús nativos de Windows. Top-K conserva el selector
 nativo, con esquema oscuro.
 
+El logo conserva la elipse, el punto orbital y sus transiciones. Únicamente se
+añadió «Financial Search» en su esquina inferior derecha, siguiendo el idioma
+inglés de la interfaz, sin modificar la composición.
+
 La transición inicial reduce y desplaza el mismo logo y barra mediante FLIP;
 ambos quedan en un dock sticky. Los resultados aparecen debajo al terminar esa
 transición. Las nuevas búsquedas conservan el dock, el campo y su configuración.
@@ -289,7 +293,7 @@ contenido a media opacidad:
 
 - [Inicio](capturas/inicio.png)
 - [Selector de modelos](capturas/selector-modelos.png)
-- [Resultados del híbrido](capturas/resultados.png)
+- [Resultados del híbrido, fase histórica](capturas/resultados.png)
 - [Comparación de rankings](capturas/comparacion.png)
 - [Evaluación](capturas/evaluacion.png)
 - [Acerca del sistema](capturas/acerca.png)

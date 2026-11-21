@@ -76,7 +76,7 @@ Git, capturas ni trazas.
 | Comprobación | Resultado |
 |---|---|
 | Backend unitario | **108 correctas**, incluidas las 82 originales |
-| Frontend unitario | **39 correctas** |
+| Frontend unitario | **42 correctas** |
 | Linux/CPU | Cinco modelos, comparación y recursos completos correctos |
 | API Vercel Preview | Salud, integridad, catálogo, cinco búsquedas, comparación y memoria correctos |
 | API pública | Cinco búsquedas y comparación correctas, sin autenticación |

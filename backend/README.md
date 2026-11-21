@@ -1,7 +1,7 @@
 # FiQA API on Vercel
 
 This adapter deploys the existing `ri_fiqa.api:app` on Python 3.12 with PyTorch
-CPU. Retrieval code, embeddings, academic metrics and the frontend are unchanged.
+CPU. This adapter preserves retrieval code, embeddings and academic metrics.
 
 Public API: https://fiqa-api.vercel.app/docs.
 Public frontend: https://fiqa-indol.vercel.app.
