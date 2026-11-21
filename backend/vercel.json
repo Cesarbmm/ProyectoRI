@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "fastapi",
+  "fluid": true,
+  "buildCommand": "uv run --frozen python prepare_runtime.py",
+  "functions": {
+    "main.py": {
+      "maxDuration": 300,
+      "includeFiles": "{runtime/**,ri_fiqa/**,assets-manifest.json}",
+      "excludeFiles": "{tests/**,__pycache__/**,*.log,prepare_runtime.py,verify_api.py}"
+    }
+  }
+}

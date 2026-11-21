@@ -1,0 +1,104 @@
+{
+  "corpus_documents": 57638,
+  "indexed_documents": 57600,
+  "dimension": 768,
+  "morphology": "stemming",
+  "files": [
+    {
+      "path": "data/raw/corpus/data-00000-of-00001.arrow",
+      "bytes": 45324568,
+      "sha256": "d057110b8d13865387e6fa186bc68c45b8d9108de524a9546483d7b89ce52d0c"
+    },
+    {
+      "path": "data/raw/corpus/dataset_info.json",
+      "bytes": 757,
+      "sha256": "7f91640b8028ef06e6526f3ac718b8b0c60980f5f71bbd1c4d7fa187389b7ef0"
+    },
+    {
+      "path": "data/raw/corpus/state.json",
+      "bytes": 263,
+      "sha256": "b5a815f6aebf9e84c4bd502d4c17c5acab494a9bcaf8b5421e20eaca233de8e5"
+    },
+    {
+      "path": "data/processed/inverted_index_stemming.json.gz",
+      "bytes": 12076326,
+      "sha256": "14a5d920fcf6beef8588c66b499fe586aaf93a98c9090b9a28ca85d4e705e31d"
+    },
+    {
+      "path": "data/processed/semantic_bge/doc_ids.json",
+      "bytes": 738059,
+      "sha256": "4e8b7b2d0b4b9ee242a3c20f576bcee4f6e03aa07b64d4d983219a7a5141401c"
+    },
+    {
+      "path": "data/processed/semantic_bge/index.faiss",
+      "bytes": 176947245,
+      "sha256": "7be1fc59abe4cd469dda94981d24b5bb770cb6a1a3735e7e9856588008078cb0"
+    },
+    {
+      "path": "data/processed/semantic_bge/metadata.json",
+      "bytes": 716,
+      "sha256": "909f7b8ce7550d6bf4e4fc1cc4add064ae80397d52a0b43ab449aec4edc15135"
+    }
+  ],
+  "archive": {
+    "url": "https://github.com/Cesarbmm/ProyectoRI/releases/download/fiqa-runtime-v1/fiqa-runtime.tar.gz",
+    "bytes": 197775593,
+    "sha256": "088a9cd50b858475d160bffd131a8714c0aa506c7a7779c6eaa23d7e3cde3d0d"
+  },
+  "encoder": {
+    "model_id": "BAAI/bge-base-en-v1.5",
+    "revision": "a5beb1e3e68b9ab74eb54cfd186867f64f240e1a",
+    "files": [
+      {
+        "path": "1_Pooling/config.json",
+        "bytes": 190,
+        "sha256": "c9bef85e8bbf4b2eab4941b3fb62bd33f88686748b478f2e264d256472d9643b"
+      },
+      {
+        "path": "config.json",
+        "bytes": 777,
+        "sha256": "bc00af31a4a31b74040d73370aa83b62da34c90b75eb77bfa7db039d90abd591"
+      },
+      {
+        "path": "config_sentence_transformers.json",
+        "bytes": 124,
+        "sha256": "940d5f50db195fa6e5e6a4f122c095f77880de259d74b14a65779ed48bdd7c56"
+      },
+      {
+        "path": "model.safetensors",
+        "bytes": 437955512,
+        "sha256": "c7c1988aae201f80cf91a5dbbd5866409503b89dcaba877ca6dba7dd0a5167d7"
+      },
+      {
+        "path": "modules.json",
+        "bytes": 349,
+        "sha256": "84e40c8e006c9b1d6c122e02cba9b02458120b5fb0c87b746c41e0207cf642cf"
+      },
+      {
+        "path": "sentence_bert_config.json",
+        "bytes": 52,
+        "sha256": "84e39fda68ccbff05bfa723ae9c0e70e23e2ec373b76e0f8c6e71af72a693cbf"
+      },
+      {
+        "path": "special_tokens_map.json",
+        "bytes": 125,
+        "sha256": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3"
+      },
+      {
+        "path": "tokenizer.json",
+        "bytes": 711396,
+        "sha256": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66"
+      },
+      {
+        "path": "tokenizer_config.json",
+        "bytes": 366,
+        "sha256": "9261e7d79b44c8195c1cada2b453e55b00aeb81e907a6664974b4d7776172ab3"
+      },
+      {
+        "path": "vocab.txt",
+        "bytes": 231508,
+        "sha256": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      }
+    ]
+  }
+}

@@ -48,3 +48,6 @@ frontend/playwright-report/
 
 # Hosting links and downloaded environment configuration
 .vercel/
+backend/.venv/
+backend/runtime/
+backend/ri_fiqa/

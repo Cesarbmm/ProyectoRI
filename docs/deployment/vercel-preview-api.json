@@ -1,0 +1,162 @@
+{
+  "base_url": "https://fiqa-gxs42c22g-fonfini123-1060.vercel.app",
+  "transport": "vercel curl",
+  "passed": true,
+  "rankings": [
+    {
+      "model": "jaccard",
+      "elapsed_ms": 2850.37,
+      "document_ids": [
+        "480881",
+        "512153",
+        "268485"
+      ]
+    },
+    {
+      "model": "tfidf",
+      "elapsed_ms": 1503.53,
+      "document_ids": [
+        "263225",
+        "454072",
+        "395376"
+      ]
+    },
+    {
+      "model": "bm25",
+      "elapsed_ms": 33.59,
+      "document_ids": [
+        "263225",
+        "281491",
+        "116930"
+      ]
+    },
+    {
+      "model": "bge",
+      "elapsed_ms": 5213.62,
+      "document_ids": [
+        "263225",
+        "281491",
+        "26820"
+      ]
+    },
+    {
+      "model": "hybrid",
+      "elapsed_ms": 125.21,
+      "document_ids": [
+        "263225",
+        "281491",
+        "26820"
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "path": "/health",
+      "elapsed_ms": 7769.31
+    },
+    {
+      "path": "/ready",
+      "elapsed_ms": 2697.37
+    },
+    {
+      "path": "/models",
+      "elapsed_ms": 1870.65
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 4774.65
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 3257.7
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 1744.35
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 6918.3
+    },
+    {
+      "path": "/search",
+      "elapsed_ms": 1753.72
+    },
+    {
+      "path": "/search/compare",
+      "elapsed_ms": 2198.25
+    },
+    {
+      "path": "/runtime/measure",
+      "elapsed_ms": 2434.17
+    }
+  ],
+  "comparison_models": 5,
+  "runtime": {
+    "corpus_documents": 57638,
+    "indexed_documents": 57600,
+    "dimension": 768,
+    "encoder_revision": "a5beb1e3e68b9ab74eb54cfd186867f64f240e1a",
+    "archive_sha256": "088a9cd50b858475d160bffd131a8714c0aa506c7a7779c6eaa23d7e3cde3d0d",
+    "torch_cuda": null,
+    "download_on_request": false,
+    "asset_bytes": 673988333,
+    "build_seconds": 15.027,
+    "versions": {
+      "torch": "2.9.1+cpu",
+      "faiss-cpu": "1.16.0",
+      "sentence-transformers": "6.3.0",
+      "datasets": "5.2.0",
+      "numpy": "2.4.6"
+    },
+    "rss_bytes": 1263628288,
+    "peak_rss_bytes": 1263628288,
+    "device": "cpu",
+    "loaded_lexical_models": [
+      "bm25",
+      "jaccard",
+      "tfidf"
+    ],
+    "semantic_loaded": true,
+    "loaded_corpus_documents": 57638,
+    "configuration": {
+      "morphology": "stemming",
+      "bm25_k1": 0.8,
+      "bm25_b": 0.75,
+      "rrf_k": 10,
+      "bge_weight": 0.9
+    },
+    "measured_models": [
+      {
+        "model": "jaccard",
+        "count": 3,
+        "first_doc_id": "480881",
+        "elapsed_ms": 17.27
+      },
+      {
+        "model": "tfidf",
+        "count": 3,
+        "first_doc_id": "263225",
+        "elapsed_ms": 294.08
+      },
+      {
+        "model": "bm25",
+        "count": 3,
+        "first_doc_id": "263225",
+        "elapsed_ms": 13.6
+      },
+      {
+        "model": "bge",
+        "count": 3,
+        "first_doc_id": "263225",
+        "elapsed_ms": 106.96
+      },
+      {
+        "model": "hybrid",
+        "count": 3,
+        "first_doc_id": "263225",
+        "elapsed_ms": 126.06
+      }
+    ]
+  }
+}

@@ -18,3 +18,6 @@ frontend/test-results
 frontend/playwright-report
 results/*.trec
 results/**/*.trec
+/backend/runtime
+/backend/ri_fiqa
+/backend/.venv
