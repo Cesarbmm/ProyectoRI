@@ -1,0 +1,81 @@
+{
+  "platform": "Windows",
+  "device": "cpu",
+  "note": "Local measurement, not a Linux hosting load test. Model was already cached.",
+  "ready": {
+    "status": "ready",
+    "semantic_index": "semantic_bge",
+    "lexical_preprocessing": "stemming",
+    "components": {
+      "corpus": true,
+      "inverted_index": true,
+      "faiss_index": true,
+      "document_ids": true,
+      "semantic_metadata": true,
+      "metadata_consistent": true
+    }
+  },
+  "total_seconds": 12.697,
+  "models": [
+    {
+      "model": "jaccard",
+      "count": 3,
+      "seconds": 1.78,
+      "first_doc_id": "480881",
+      "memory": {
+        "working_set_bytes": 373055488,
+        "peak_working_set_bytes": 418344960,
+        "private_committed_bytes": 1885093888,
+        "peak_private_committed_bytes": 1885171712
+      }
+    },
+    {
+      "model": "tfidf",
+      "count": 3,
+      "seconds": 0.424,
+      "first_doc_id": "263225",
+      "memory": {
+        "working_set_bytes": 384798720,
+        "peak_working_set_bytes": 418344960,
+        "private_committed_bytes": 1897037824,
+        "peak_private_committed_bytes": 1897922560
+      }
+    },
+    {
+      "model": "bm25",
+      "count": 3,
+      "seconds": 0.019,
+      "first_doc_id": "263225",
+      "memory": {
+        "working_set_bytes": 387129344,
+        "peak_working_set_bytes": 418344960,
+        "private_committed_bytes": 1898967040,
+        "peak_private_committed_bytes": 1898979328
+      }
+    },
+    {
+      "model": "bge",
+      "count": 3,
+      "seconds": 10.4,
+      "first_doc_id": "263225",
+      "memory": {
+        "working_set_bytes": 1059356672,
+        "peak_working_set_bytes": 1060110336,
+        "private_committed_bytes": 7780352000,
+        "peak_private_committed_bytes": 7794814976
+      }
+    },
+    {
+      "model": "hybrid",
+      "count": 3,
+      "seconds": 0.072,
+      "first_doc_id": "263225",
+      "memory": {
+        "working_set_bytes": 1066168320,
+        "peak_working_set_bytes": 1066168320,
+        "private_committed_bytes": 7782080512,
+        "peak_private_committed_bytes": 7794814976
+      }
+    }
+  ]
+}

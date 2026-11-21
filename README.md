@@ -2,7 +2,11 @@
 
 Proyecto académico de **Recuperación de Información (RI)** sobre el corpus financiero **FiQA (BEIR)**. Datos de referencia: `BeIR/fiqa` (corpus y consultas) y `BeIR/fiqa-qrels` (juicios de relevancia). Implementa cuatro familias de recuperación, un sistema híbrido y una API REST para integrarse con una interfaz web.
 
-> **Estado:** backend funcional y verificado localmente. La publicación pública del backend y el frontend quedan pendientes. Los archivos de datos y los índices no se almacenan en Git.
+> **Estado:** backend y frontend React funcionales y verificados localmente. La publicación pública sigue pendiente. Los archivos de datos y los índices no se almacenan en Git.
+
+El frontend definitivo está en [`frontend/`](frontend/), con búsqueda real,
+comparación de modelos y evaluación de la configuración final Snowball. Consulta la
+[guía de instalación, pruebas y capturas](docs/FRONTEND.md).
 
 ## Modelos disponibles
 
@@ -247,6 +251,9 @@ El script prueba disponibilidad, los cinco modelos, comparación, validaciones y
 Las métricas se guardan en `results/` como JSON/CSV; los rankings `.trec` se regeneran localmente y están excluidos de Git. Los archivos de datos y los índices también están excluidos.
 
 ## Despliegue: situación actual
+
+Configuración de Vercel, capacidad del backend y verificación de despliegues:
+[docs/DESPLIEGUE.md](docs/DESPLIEGUE.md).
 
 **Backend probado localmente; despliegue público pendiente.** El frontend puede alojarse de manera independiente. Un servidor remoto de Python deberá disponer de los datos, índices, encoder, memoria suficiente y variables de entorno/CORS. Antes de escoger proveedor, medir memoria, almacenamiento y tiempo de arranque; no asumir que un servicio gratuito de funciones serverless soportará BGE + PyTorch.
 

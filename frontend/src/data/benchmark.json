@@ -1,0 +1,170 @@
+{
+  "dataset": "BeIR/fiqa",
+  "split": "test",
+  "queries": 648,
+  "corpus": {
+    "documents": 57638,
+    "vectors": 57600,
+    "empty": 38,
+    "evidence": "Verificados con datasets.load_from_disk(data/raw/corpus), semantic_bge/metadata.json y FAISS ntotal; ver docs/FRONTEND.md."
+  },
+  "configuration": {
+    "morphology": "stemming",
+    "bm25_k1": 0.8,
+    "bm25_b": 0.75
+  },
+  "historical": [
+    {
+      "model": "jaccard",
+      "metrics": {
+        "MAP@1000": 0.03750981500600257,
+        "P@10": 0.014814814814814814,
+        "Recall@100": 0.19468045243508206,
+        "NDCG@10": 0.04739396508084453
+      },
+      "source": "results/service_jaccard_test_metrics.json"
+    },
+    {
+      "model": "tfidf",
+      "metrics": {
+        "MAP@1000": 0.1285356534744046,
+        "P@10": 0.04876543209876544,
+        "Recall@100": 0.45532222835463576,
+        "NDCG@10": 0.15865442378273745
+      },
+      "source": "results/service_tfidf_test_metrics.json"
+    },
+    {
+      "model": "bm25",
+      "metrics": {
+        "MAP@1000": 0.1913347219155298,
+        "P@10": 0.06466049382716049,
+        "Recall@100": 0.5205260574473537,
+        "NDCG@10": 0.2341154638921945
+      },
+      "source": "results/service_bm25_test_metrics.json"
+    },
+    {
+      "model": "bge",
+      "metrics": {
+        "MAP@1000": 0.34714840706255373,
+        "P@10": 0.11234567901234567,
+        "Recall@100": 0.7414716927448408,
+        "NDCG@10": 0.406231202203102
+      },
+      "source": "results/service_bge_test_metrics.json"
+    },
+    {
+      "model": "hybrid",
+      "metrics": {
+        "MAP@1000": 0.3500060424200144,
+        "P@10": 0.11265432098765432,
+        "Recall@100": 0.7454607677987307,
+        "NDCG@10": 0.4083017938370048
+      },
+      "source": "results/service_hybrid_test_metrics.json"
+    }
+  ],
+  "current": [
+    {
+      "model": "jaccard",
+      "metrics": {
+        "MAP@1000": 0.03858744708536767,
+        "P@10": 0.015740740740740743,
+        "Recall@100": 0.202816542168394,
+        "NDCG@10": 0.048739617368738046
+      },
+      "source": "results/preprocessing_v1/final_test/stemming_jaccard_test.json"
+    },
+    {
+      "model": "tfidf",
+      "metrics": {
+        "MAP@1000": 0.14115302173041006,
+        "P@10": 0.05324074074074074,
+        "Recall@100": 0.4911860858620118,
+        "NDCG@10": 0.1737727086610553
+      },
+      "source": "results/preprocessing_v1/final_test/stemming_tfidf_test.json"
+    },
+    {
+      "model": "bm25",
+      "metrics": {
+        "MAP@1000": 0.21029397724032908,
+        "P@10": 0.06959876543209877,
+        "Recall@100": 0.5456834403593662,
+        "NDCG@10": 0.25496853900658195
+      },
+      "source": "results/preprocessing_v1/final_test/stemming_bm25_test.json"
+    },
+    {
+      "model": "bge",
+      "metrics": {
+        "MAP@1000": 0.34714840706255373,
+        "P@10": 0.11234567901234567,
+        "Recall@100": 0.7414716927448408,
+        "NDCG@10": 0.406231202203102
+      },
+      "source": "results/service_bge_test_metrics.json"
+    },
+    {
+      "model": "hybrid",
+      "metrics": {
+        "MAP@1000": 0.3496038993782638,
+        "P@10": 0.11296296296296297,
+        "Recall@100": 0.743390294547702,
+        "NDCG@10": 0.40807606815713415
+      },
+      "source": "results/preprocessing_v1/final_test/stemming_hybrid_test.json"
+    }
+  ],
+  "sources": [
+    {
+      "path": "results/auditoria_fiqa.json",
+      "sha256": "f7c284719791fc2e8f743cdd2cb2b8f09d5b5bd429d8a4ddb247b6ab339ace0f"
+    },
+    {
+      "path": "results/preprocessing_v1/final_test/stemming_bm25_test.json",
+      "sha256": "ec6dae7ad8f2f31c3a215140bcabd36172d8bb06b37a9f5b013139677d9bfc70"
+    },
+    {
+      "path": "results/preprocessing_v1/final_test/stemming_hybrid_test.json",
+      "sha256": "4522b275da21e772b11b216c1b9eed0baed1c6372506b9ac203a21f641048915"
+    },
+    {
+      "path": "results/preprocessing_v1/final_test/stemming_jaccard_test.json",
+      "sha256": "77bd9953cc84095d41b1f6109f9507799aaacc9fe2e1ffa8b33475e0c064f5f9"
+    },
+    {
+      "path": "results/preprocessing_v1/final_test/stemming_tfidf_test.json",
+      "sha256": "604883266d1cb286bf462feb6afc058cf3aadd56622ccef8a1ecc84152fb830d"
+    },
+    {
+      "path": "results/preprocessing_v1/selection_frozen.json",
+      "sha256": "a3e9d35583af70ce8e1fcdf10ea4fc565c31cfc7969542dc13917fd35930b49e"
+    },
+    {
+      "path": "results/service_bge_test_metrics.json",
+      "sha256": "405d1a1e3b5b127ebdbeee052a3a49a78ffcde7488553d1207914d85d2829358"
+    },
+    {
+      "path": "results/service_bge_test_metrics.json",
+      "sha256": "405d1a1e3b5b127ebdbeee052a3a49a78ffcde7488553d1207914d85d2829358"
+    },
+    {
+      "path": "results/service_bm25_test_metrics.json",
+      "sha256": "8c3904f41f37cebb03ce55a4c80e6764fa1a76188e73457ce689328c8549f723"
+    },
+    {
+      "path": "results/service_hybrid_test_metrics.json",
+      "sha256": "b8b95744e82e8601dd04e67211a2cd4cf236e114b1b80de0f9eb2ee759eaa0ac"
+    },
+    {
+      "path": "results/service_jaccard_test_metrics.json",
+      "sha256": "0556ee003362d19b849fbf54e17a7d7e63ec5d6de9ff2b74ed80800efe725ced"
+    },
+    {
+      "path": "results/service_tfidf_test_metrics.json",
+      "sha256": "51aa74f53ed25998f15a736ca97e925af141146d413fe6b71983e9440d0a414b"
+    }
+  ]
+}

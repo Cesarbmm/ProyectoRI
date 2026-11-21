@@ -39,3 +39,12 @@ results/**/*.trec
 # Archivos temporales
 *.log
 *.tmp
+
+# Frontend: dependencias, salida y evidencias temporales de pruebas
+node_modules/
+frontend/test-results/
+frontend/playwright-report/
+*.tsbuildinfo
+
+# Hosting links and downloaded environment configuration
+.vercel/
