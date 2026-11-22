@@ -1,12 +1,14 @@
 # FiQA — Motor de Recuperación de Información
 
+**Acceso rápido:** [Informe técnico final (PDF)](docs/InformeProyecto.pdf) · [Aplicación web](https://fiqa-indol.vercel.app/)
+
 Proyecto académico de **Recuperación de Información (RI)** sobre el corpus financiero **FiQA (BEIR)**. Datos de referencia: `BeIR/fiqa` (corpus y consultas) y `BeIR/fiqa-qrels` (juicios de relevancia). Implementa cuatro familias de recuperación, un sistema híbrido y una API REST para integrarse con una interfaz web.
 
 La web ofrece únicamente **Jaccard, TF-IDF, BM25 y BGE + FAISS**. La opción
 predeterminada es **Default (BGE + FAISS)**. El híbrido se conserva para
 reproducción histórica y como fila histórica en Evaluación, sin ser seleccionable.
 
-> **Estado:** backend y frontend React funcionales y verificados localmente. La publicación pública sigue pendiente. Los archivos de datos y los índices no se almacenan en Git.
+> **Estado:** frontend y API desplegados y verificados en Vercel. Los archivos de datos y los índices no se almacenan en Git.
 
 El frontend definitivo está en [`frontend/`](frontend/), con búsqueda real,
 comparación de modelos y evaluación de la configuración final Snowball. Consulta la
@@ -244,7 +246,7 @@ python -m pip check
 python -m unittest discover -s tests -v
 ```
 
-La última ejecución verificada tuvo **104 pruebas correctas**. Con la API iniciada y los recursos disponibles:
+La última ejecución verificada tuvo **108 pruebas correctas**. Con la API iniciada y los recursos disponibles:
 
 ```powershell
 python scripts/verificar_api.py
