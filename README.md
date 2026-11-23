@@ -97,6 +97,10 @@ data/raw/                   # Generado localmente; ignorado por Git
 data/processed/             # Índices generados; ignorados por Git
 ```
 
+![Diagrama conceptual de la arquitectura de FiQA](docs/arquitectura_fiqa.webp)
+
+*La fusión RRF del diagrama es una extensión experimental y no forma parte del flujo individual obligatorio de los cuatro modelos de la aplicación.*
+
 ## Requisitos
 
 - Python **3.11** recomendado, Git y acceso a internet para descargar corpus y modelos.
