@@ -1,6 +1,9 @@
 # FiQA — Motor de Recuperación de Información
 
-**Acceso rápido:** [Informe técnico final (PDF)](docs/InformeProyecto.pdf) · [Aplicación web](https://fiqa-indol.vercel.app/)
+## Enlaces de entrega
+
+- **📄 Link al PDF — Informe final:** [Abrir el informe en PDF](https://github.com/Cesarbmm/ProyectoRI/blob/main/docs/InformeProyecto.pdf)
+- **🌐 Link a la página web — Buscador FiQA:** [Abrir FiQA en Vercel](https://fiqa-indol.vercel.app/)
 
 Proyecto académico de **Recuperación de Información (RI)** sobre el corpus financiero **FiQA (BEIR)**. Datos de referencia: `BeIR/fiqa` (corpus y consultas) y `BeIR/fiqa-qrels` (juicios de relevancia). Implementa cuatro familias de recuperación, un sistema híbrido y una API REST para integrarse con una interfaz web.
 
