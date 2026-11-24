@@ -97,9 +97,7 @@ data/raw/                   # Generado localmente; ignorado por Git
 data/processed/             # Índices generados; ignorados por Git
 ```
 
-![Diagrama conceptual de la arquitectura de FiQA](docs/arquitectura_fiqa.webp)
-
-*La fusión RRF del diagrama es una extensión experimental y no forma parte del flujo individual obligatorio de los cuatro modelos de la aplicación.*
+![Arquitectura final de FiQA: selector de modelos, recuperación léxica y semántica](docs/arquitectura_fiqa.webp)
 
 ## Requisitos
 
