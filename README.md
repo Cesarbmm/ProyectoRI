@@ -76,7 +76,7 @@ tabla anterior no se han modificado. El baseline sigue disponible con
 
 ## Arquitectura
 
-![Arquitectura final de FiQA: selector de modelos, recuperación léxica y semántica](docs/arquitectura_fiqa.webp)
+![FiQA: arquitectura real de una consulta](docs/arquitectura_fiqa.webp)
 
 ## Estructura
 
