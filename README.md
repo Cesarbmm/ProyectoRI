@@ -76,6 +76,10 @@ tabla anterior no se han modificado. El baseline sigue disponible con
 
 ## Arquitectura
 
+![Arquitectura final de FiQA: selector de modelos, recuperación léxica y semántica](docs/arquitectura_fiqa.webp)
+
+## Estructura
+
 ```text
 src/ri_fiqa/
   preprocessing.py          # Normalización y tokenización
@@ -96,8 +100,6 @@ results/                    # Métricas JSON y reportes (sin rankings .trec)
 data/raw/                   # Generado localmente; ignorado por Git
 data/processed/             # Índices generados; ignorados por Git
 ```
-
-![Arquitectura final de FiQA: selector de modelos, recuperación léxica y semántica](docs/arquitectura_fiqa.webp)
 
 ## Requisitos
 
