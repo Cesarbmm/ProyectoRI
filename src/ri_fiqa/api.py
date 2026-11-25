@@ -40,6 +40,9 @@ ModelName = Literal[
 # 1. Esquemas de entrada
 # ---------------------------------------------------------
 
+# Nota de defensa: la API admite 'hybrid' por compatibilidad histórica;
+# el frontend público filtra ese modelo y solo ofrece cuatro opciones.
+# Retirarlo aquí sería un cambio de contrato, no una limpieza inocua.
 class SearchRequest(BaseModel):
     model_config = ConfigDict(
         str_strip_whitespace=True,

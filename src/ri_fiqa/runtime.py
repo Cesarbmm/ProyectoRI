@@ -42,6 +42,8 @@ def inspect_assets(
                 path.is_file() and path.stat().st_size > 0
             )
 
+    # Nota de defensa: /ready exige BGE, 768 D, normalización L2 e IndexFlatIP.
+    # Otro índice o encoder requeriría regenerar artefactos y actualizar esta validación.
     components["metadata_consistent"] = False
 
     if components["semantic_metadata"]:

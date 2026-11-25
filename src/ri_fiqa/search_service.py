@@ -161,6 +161,8 @@ class SearchService:
         with ids_path.open(encoding="utf-8") as file:
             doc_ids = json.load(file)
 
+        # Nota de defensa: el encoder y FAISS deben provenir del mismo build.
+        # No intercambiar índice MiniLM/BGE: pueden cambiar dimensión y scores.
         faiss_index = faiss.read_index(str(index_path))
 
         if (

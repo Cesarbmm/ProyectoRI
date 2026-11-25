@@ -142,6 +142,9 @@ def main():
     )
 
     # Búsqueda exacta por producto interno.
+    # Posible mejora (NO ACTIVA): comparar HNSW/IVF/PQ con el FlatIP exacto.
+    # Requiere reindexar, ajustar entrenamiento/parámetros y medir recall/latencia.
+    # Cambiar el constructor sin actualizar metadata y /ready rompería el runtime.
     vector_index = faiss.IndexFlatIP(dimension)
 
     doc_ids = []

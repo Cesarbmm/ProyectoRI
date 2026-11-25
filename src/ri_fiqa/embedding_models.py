@@ -33,6 +33,10 @@ MODEL_SPECS = {
 }
 
 
+# Posible mejora (NO ACTIVA): MiniLM usa 384 D frente a los 768 D de BGE.
+# Cambiar encoder requiere reconstruir FAISS, metadata y hashes del despliegue.
+# El query_prompt de BGE NO es un prompt de un LLM generativo.
+
 class PromptedEncoder:
     """Aplica instrucciones distintas a consultas y documentos."""
 

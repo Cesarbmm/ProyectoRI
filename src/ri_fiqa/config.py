@@ -36,3 +36,6 @@ class RetrievalConfig:
 
 # results/preprocessing_v1/selection_frozen.json; solo validation, sin reajustes test.
 SELECTED_CONFIG = RetrievalConfig(morphology="stemming", bm25_k1=0.8, bm25_b=0.75)
+
+# Posible mejora (NO ACTIVA): explorar otros k1/b SOLO en validation.
+# Modificar SELECTED_CONFIG alteraría los rankings congelados; no hacerlo en la entrega.

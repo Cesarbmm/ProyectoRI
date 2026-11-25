@@ -114,6 +114,8 @@ class TextPreprocessor:
                 if token not in STOPWORDS
             ]
 
+        # Nota de defensa: Jaccard, TF-IDF y BM25 comparten este tratamiento.
+        # BGE utiliza su propio tokenizer; no aplicarle stemming desde aquí.
         if self._transform is not None:
             tokens = [
                 self._transform(token)
